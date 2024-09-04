@@ -1,20 +1,20 @@
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
 
-export default function Menu() {
+export const Menu = () => {
   return (
     <div className="flex flex-col gap-1 uppercase py-5">
       <Button
         as={Link}
         className="py-1 h-auto w-full flex justify-start bg-transparent font-bold text-[#414141] text-md whitespace-normal rounded-none"
-        href={"#"}
+        href={"/REMERAS-100"}
       >
         Remeras
       </Button>
       <Button
         as={Link}
         className="py-1 h-auto w-full flex justify-start bg-transparent font-bold text-[#414141] text-md whitespace-normal rounded-none"
-        href={"#"}
+        href={"/CAMISETAS-101"}
       >
         Camisetas
       </Button>
@@ -28,7 +28,7 @@ export default function Menu() {
       <Button
         as={Link}
         className="py-1 h-auto w-full flex justify-start bg-transparent font-bold text-[#414141] text-md whitespace-normal rounded-none"
-        href={"#"}
+        href={"/VESTIDOS-102"}
       >
         Vestidos
       </Button>
@@ -36,7 +36,7 @@ export default function Menu() {
       <Button
         as={Link}
         className="py-1 h-auto w-full flex justify-start bg-transparent font-bold text-[#414141] text-md whitespace-normal rounded-none"
-        href={"#"}
+        href={"/KIMONOS-103"}
       >
         Kimonos
       </Button>
@@ -44,7 +44,7 @@ export default function Menu() {
       <Button
         as={Link}
         className="py-1 h-auto w-full flex justify-start bg-transparent font-bold text-[#414141] text-md whitespace-normal rounded-none"
-        href={"#"}
+        href={"/BLUSAS-CAMISAS-104"}
       >
         Blusas camisas
       </Button>
@@ -52,7 +52,7 @@ export default function Menu() {
       <Button
         as={Link}
         className="py-1 h-auto w-full flex justify-start bg-transparent font-bold text-[#414141] text-md whitespace-normal rounded-none"
-        href={"#"}
+        href={"/TAPADOS-105"}
       >
         Tapados
       </Button>
@@ -60,7 +60,7 @@ export default function Menu() {
       <Button
         as={Link}
         className="py-1 h-auto w-full flex justify-start bg-transparent font-bold text-[#414141] text-md whitespace-normal rounded-none"
-        href={"#"}
+        href={"/PASHMINA-106"}
       >
         Pashmina
       </Button>
@@ -68,7 +68,7 @@ export default function Menu() {
       <Button
         as={Link}
         className="py-1 h-auto w-full flex justify-start bg-transparent font-bold text-[#414141] text-md whitespace-normal rounded-none"
-        href={"#"}
+        href={"/PANTALONES-Y-LEGGINS-107"}
       >
         Pantalones y Leggins
       </Button>
@@ -76,10 +76,10 @@ export default function Menu() {
       <Button
         as={Link}
         className="py-1 h-auto w-full flex justify-start bg-transparent font-bold text-[#414141] text-md whitespace-normal rounded-none"
-        href={"#"}
+        href={"/SWEATERS-TEJIDOS-108"}
       >
         Sweaters tejidos
       </Button>
     </div>
   );
-}
+};
