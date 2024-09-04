@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/navbar";
 import NextLink from "next/link";
 
-import Menu from "@/components/menu";
+import { Menu } from "@/components/menu";
 
 export const Navbar = () => {
   return (
