@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
 
-import { categories } from "@/app/lib/data";
+import { categories } from "@/lib/data";
 
 export const Menu = () => {
   return (

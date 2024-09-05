@@ -5,7 +5,7 @@ import { Carousel as CarouselUI } from "react-responsive-carousel";
 
 import styles from "./carousel.module.css";
 
-import { CarouselProps } from "@/app/lib/definitions";
+import { CarouselProps } from "@/app/definitions";
 
 export default function Carousel({ photos }: CarouselProps) {
   if (!photos) {
@@ -50,7 +50,7 @@ export default function Carousel({ photos }: CarouselProps) {
         <div key={index}>
           <img
             alt="photo of the place that is being described"
-            className={`h-[350px] overflow-hidden rounded-t-lg border-none border-opacity-10 object-cover shadow-inner shadow-slate-700 focus-within:outline-none sm:h-[450px]`}
+            className={`h-[70vh] overflow-hidden rounded-t-lg border-none border-opacity-10 object-cover shadow-inner shadow-slate-700 focus-within:outline-none`}
             src={image}
           />
         </div>

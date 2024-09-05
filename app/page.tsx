@@ -1,6 +1,5 @@
-import { productos } from "./lib/data";
-
-import ProductCard from "@/components/product-card";
+import ProductList from "@/components/product-list";
+import { productos } from "@/lib/data";
 
 export default function Home() {
   return (
@@ -8,11 +7,7 @@ export default function Home() {
       <p className="text-lg font-bold border-2 w-full text-center uppercase">
         TODAS LAS PRENDAS
       </p>
-      <div className="flex flex-wrap gap-4 sm:gap-10">
-        {productos.map((product) => (
-          <ProductCard key={product.ref} product={product} />
-        ))}
-      </div>
+      <ProductList products={productos} />
     </section>
   );
 }
