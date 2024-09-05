@@ -1,0 +1,49 @@
+.Carousel {
+  min-height: 250px;
+  position: relative;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.Carousel [class='dot'] {
+  background:#ef8482 !important;
+}
+
+.Carousel [class='dot selected'] {
+  background: #ef8482 !important;
+}
+
+.PrevArrow,
+.NextArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0.313rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #000;
+  transition: background-color 0.3s ease;
+  z-index: 1; /* Asegura que los botones estén delante del carrusel */
+  transition: 500ms;
+}
+
+.PrevArrow:hover,
+.NextArrow:hover {
+  transition: 1s;
+  scale: 1.3;
+}
+
+.NextArrow {
+  right: 0.625rem;
+}
+
+.PrevArrow {
+  left: 0.625rem;
+}
