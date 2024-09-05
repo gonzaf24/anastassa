@@ -1,5 +1,3 @@
-import Carousel from "@/components/carousel";
-
 export default function ProductCard({
   product,
   onProductSelect,
@@ -15,7 +13,11 @@ export default function ProductCard({
       onClick={() => onProductSelect(product)}
       onKeyDown={() => {}}
     >
-      <Carousel photos={product.photos} />
+      <img
+        alt="Imagen prenda"
+        className="min-h-[250px] sm:min-h-[400px] h-auto w-full object-cover"
+        src={product.photos[0]}
+      />
       <p className="relative p-2 pt-6 text-tiny font-bold border-2 w-full text-left uppercase text-ellipsis whitespace-nowrap	overflow-hidden">
         {product.title}
         <span className="absolute top-1 left-2 text-tiny text-[#ef8482]">
