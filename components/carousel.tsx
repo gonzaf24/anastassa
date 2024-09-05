@@ -50,7 +50,7 @@ export default function Carousel({ photos }: CarouselProps) {
         <div key={index}>
           <img
             alt="photo of the place that is being described"
-            className={`h-[70vh] overflow-hidden rounded-t-lg border-none border-opacity-10 object-cover shadow-inner shadow-slate-700 focus-within:outline-none`}
+            className="h-[65dvh]  overflow-hidden rounded-t-lg border-none border-opacity-10 object-cover shadow-inner shadow-slate-700 focus-within:outline-none"
             src={image}
           />
         </div>

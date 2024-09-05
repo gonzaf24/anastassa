@@ -10,11 +10,10 @@ export default function ProductList({
 }: {
   products: ProductsProps[];
 }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [product, setProduct] = useState<ProductsProps | undefined>(undefined);
 
   const onProductClick = (product: any) => {
-    console.log(product);
     setProduct(product);
     setOpen(true);
   };
