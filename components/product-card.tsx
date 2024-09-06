@@ -7,7 +7,7 @@ export default function ProductCard({
 }) {
   return (
     <div
-      className="z-0 m-auto flex flex-col p-0 h-auto gap-0 bg-transparent w-[150px] sm:w-[225px] sm:hover:scale-105 sm:transition-all cursor-pointer"
+      className="m-auto flex flex-col p-0 h-auto gap-0 bg-transparent w-[150px] sm:w-[225px] sm:hover:scale-105 sm:transition-all"
       role="button"
       tabIndex={0}
       onClick={() => onProductSelect(product)}
