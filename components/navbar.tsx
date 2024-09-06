@@ -33,7 +33,7 @@ export const Navbar = () => {
       position="sticky"
       onMenuOpenChange={setIsMenuOpen} // Maneja el cambio del estado del menú
     >
-      <NavbarContent className="basis-full max-w-min" justify="start">
+      <NavbarContent className="basis-full max-w-min z-10" justify="start">
         <div className="sm:hidden">
           <NavbarMenuToggle
             className="h-[50px] border-1 border-gray-200 p-2 rounded-md w-[50px]"
@@ -44,7 +44,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarContent
-        className="basis-full min-w-[150px] absolute top-0 left-0 right-0 bottom-0 sm:relative sm:top-auto sm:bottom-auto sm:left-auto sm:right-auto"
+        className="basis-full min-w-[150px] absolute top-0 left-0 right-0 bottom-0 sm:relative sm:top-auto sm:bottom-auto sm:left-auto sm:right-auto z-0"
         justify="center"
       >
         <NavbarBrand as="li" className="gap-3 max-w-fit">
