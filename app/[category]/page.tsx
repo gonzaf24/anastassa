@@ -1,4 +1,4 @@
-import { parseCategoryParam } from "@/lib/utils";
+import { parseCategoryParam } from "@/app/lib/utils";
 
 export default function CategoryPage({
   params,

@@ -1,39 +1,34 @@
-import "@/styles/globals.css";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Metadata, Viewport } from "next";
-import clsx from "clsx";
-import Link from "next/link";
-
-import { Providers } from "./providers";
-
-import { siteConfig } from "@/config/site";
-import { fontSans } from "@/config/fonts";
-import { Navbar } from "@/components/navbar";
-import { Menu } from "@/components/menu";
+import '@/app/ui/global.css';
+import { inter } from '@/app/ui/fonts';
+import { ReactNode } from 'react';
+import { Metadata } from 'next';
+import { Providers } from './providers';
+import { Navbar } from './ui/navbar';
+import { Menu } from './ui/menu';
+import Link from 'next/link';
+import SignOutButton from './ui/sign-out-button';
+import { SessionProvider } from "next-auth/react"
+import { auth } from '@/auth';
 
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
+    template: '%s | Acme Dashboard',
+    default: 'Acme Dashboard',
   },
-  description: siteConfig.description,
-  icons: {
-    icon: "/favicon.ico",
-  },
+  description: 'The official Next.js Learn Dashboard built with App Router.',
+  metadataBase: new URL('https://next-learn-admin.vercel.sh'),
 };
 
-export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
+
+type LayoutProps = {
+  children: ReactNode;
+  params: { locale: string };
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+
+export default async function RootLayout({ children, params }: LayoutProps) {
+  const session = await auth();
+
   return (
     <html suppressHydrationWarning lang="en">
       <head>
@@ -59,20 +54,21 @@ export default function RootLayout({
         <meta content="#da532c" name="msapplication-TileColor" />
         <meta content="#ffffff" name="theme-color" />
       </head>
-      <body
-        className={clsx(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable,
-        )}
-      >
-        <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-          <div className="relative flex flex-col h-screen">
+      <body className={`${inter.className} antialiased`}>
+      <SessionProvider session={session}>
+
+      <Providers>
+      <div className="relative flex flex-col h-screen">
             <Navbar />
             <main className="container mx-auto max-w-7xl pt-0 px-6 sm:px-0 flex-grow flex flex-row gap-4 ">
               <div className="hidden sm:flex flex-col gap-4 max-w-[200px] w-full bg-[#ef8482]">
-                <Menu />
+                <Menu>
+                  <SignOutButton  />
+                </Menu>
               </div>
-              <div className="flex flex-col w-full  gap-4">{children}</div>
+              <div className="flex flex-col w-full  gap-4">
+                {children}
+                </div>
             </main>
             <footer className="w-full flex items-center justify-center py-3 gap-2">
               <Link
@@ -97,7 +93,8 @@ export default function RootLayout({
             </footer>
           </div>
         </Providers>
-      </body>
+        </SessionProvider>
+        </body>
     </html>
   );
 }
