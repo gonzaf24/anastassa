@@ -2,10 +2,10 @@
 import * as React from "react";
 import { Button } from "@nextui-org/button";
 
-/* import Carousel from "./carousel"; */
 
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { ProductsProps } from "./product-list";
+import Carousel from "@/components/carousel";
 
 
 export function ProductDrawer({
@@ -27,7 +27,7 @@ export function ProductDrawer({
           >
             <img alt="close" className="w-12" src="/close.svg" />
           </Button>
-          {/* <Carousel photos={product.photos} /> */}
+          <Carousel photos={product.photos} />
           <div className="flex flex-col gap-2 p-2">
             <p className="uppercase font-bold text-tiny text-[#ef8482]">
               REF: {product.ref}

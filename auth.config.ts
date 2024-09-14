@@ -12,19 +12,7 @@ export const authConfig = {
   ],
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-
-      console.log('isLoggedIn : ', isLoggedIn);
-      const isOnAdmin = nextUrl.pathname.startsWith('/admin');
-      console.log('isOnAdmin : ', isOnAdmin);
-      if (isOnAdmin) {
-        if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
-      } else if (isLoggedIn) {
-        return Response.redirect(new URL('/admin', nextUrl));
-      }else {
-        return true;
-      }
+      return !!auth
     },
     async session({ session, token }): Promise<Session | DefaultSession> {
       if (session.user && token.sub) {

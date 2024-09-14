@@ -6,5 +6,5 @@ export function SignOutButton() {
   return <Button
   className="py-1 h-auto w-full flex justify-start bg-transparent font-bold text-[#414141] text-md whitespace-normal rounded-none cursor-pointer"
 
-  onClick={() => signOut()}>Sign Out</Button>
+  onClick={() => signOut()}>Log Out</Button>
 }

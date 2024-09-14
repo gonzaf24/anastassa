@@ -1,4 +1,5 @@
 import '@/app/ui/global.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { inter } from '@/app/ui/fonts';
 import { ReactNode } from 'react';
 import { Metadata } from 'next';
@@ -63,7 +64,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
             <Navbar />
             <main className="container mx-auto max-w-7xl pt-0 px-6 sm:px-0 flex-grow flex flex-row gap-4 ">
               <div className="hidden sm:flex flex-col gap-4 max-w-[200px] w-full bg-[#ef8482]">
-                {!session && <UserMenu />} 
+                <UserMenu />
                 {session && <AdminMenu />}
               </div>
               <div className="flex flex-col w-full  gap-4">
