@@ -1,13 +1,10 @@
 "use client";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
-import { useSession } from 'next-auth/react';
 
 import { categories } from "@/app/lib/hardcoded-data";
 
-export const Menu = ({ children,  onClose }: { children?: React.ReactNode, onClose?: () => void }) => {
-  const session = useSession();
-  const user = session.data?.user;
+export const Menu = ({ onClose }: { onClose?: () => void }) => {
 
   const handleCloseMenu = () => {
     if (onClose) {
@@ -28,11 +25,6 @@ export const Menu = ({ children,  onClose }: { children?: React.ReactNode, onClo
           {category.label}
         </Button>
       ))}
-      {!user && <Button as={Link} href="/login"> 
-        Login
-      </Button>
-}
-      {children}
     </div>
   );
 };

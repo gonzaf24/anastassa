@@ -4,19 +4,19 @@ import { ReactNode } from 'react';
 import { Metadata } from 'next';
 import { Providers } from './providers';
 import { Navbar } from './ui/navbar';
-import { Menu } from './ui/menu';
+import { Menu as UserMenu } from './ui/menu';
 import Link from 'next/link';
-import SignOutButton from './ui/sign-out-button';
 import { SessionProvider } from "next-auth/react"
 import { auth } from '@/auth';
+import { Menu as AdminMenu } from './ui/admin/menu';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Acme Dashboard',
-    default: 'Acme Dashboard',
+    template: '%s | Anastassa',
+    default: 'Anastassa',
   },
-  description: 'The official Next.js Learn Dashboard built with App Router.',
-  metadataBase: new URL('https://next-learn-admin.vercel.sh'),
+  description: 'Moda y diseño Europeo',
+  metadataBase: new URL('https://anastassa.vercel.sh'),
 };
 
 
@@ -28,6 +28,7 @@ type LayoutProps = {
 
 export default async function RootLayout({ children, params }: LayoutProps) {
   const session = await auth();
+
 
   return (
     <html suppressHydrationWarning lang="en">
@@ -62,9 +63,8 @@ export default async function RootLayout({ children, params }: LayoutProps) {
             <Navbar />
             <main className="container mx-auto max-w-7xl pt-0 px-6 sm:px-0 flex-grow flex flex-row gap-4 ">
               <div className="hidden sm:flex flex-col gap-4 max-w-[200px] w-full bg-[#ef8482]">
-                <Menu>
-                  <SignOutButton  />
-                </Menu>
+                {!session && <UserMenu />} 
+                {session && <AdminMenu />}
               </div>
               <div className="flex flex-col w-full  gap-4">
                 {children}

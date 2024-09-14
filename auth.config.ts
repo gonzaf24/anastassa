@@ -4,6 +4,7 @@ import { DefaultSession, Session } from 'next-auth';
 export const authConfig = {
   pages: {
     signIn: '/login',
+    signOut: '/',
   },
   providers: [
     // added later in auth.ts since it requires bcrypt which is only compatible with Node.js
@@ -12,26 +13,24 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/admin');
-      if (isOnDashboard) {
+
+      console.log('isLoggedIn : ', isLoggedIn);
+      const isOnAdmin = nextUrl.pathname.startsWith('/admin');
+      console.log('isOnAdmin : ', isOnAdmin);
+      if (isOnAdmin) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       } else if (isLoggedIn) {
         return Response.redirect(new URL('/admin', nextUrl));
+      }else {
+        return true;
       }
-      return true;
     },
     async session({ session, token }): Promise<Session | DefaultSession> {
       if (session.user && token.sub) {
         session.user.id = token.sub;
       }
       return session;
-    },
-    async redirect({ url, baseUrl }) {
-      // Redirect to the same URL if it's already absolute
-      if (url.startsWith(baseUrl)) return url;
-      if (url.startsWith('/')) return new URL(url, baseUrl).toString();
-      return baseUrl;
     },
   },
 } satisfies NextAuthConfig;

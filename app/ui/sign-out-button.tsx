@@ -1,26 +1,10 @@
+"use client"
+import { Button } from "@nextui-org/react"
+import { signOut } from "next-auth/react"
+ 
+export function SignOutButton() {
+  return <Button
+  className="py-1 h-auto w-full flex justify-start bg-transparent font-bold text-[#414141] text-md whitespace-normal rounded-none cursor-pointer"
 
-import { auth, signOut } from '@/auth';
-import { Button } from '@nextui-org/react';
-
-export default async function SignOutButton() {   
-
-    const session = await auth() 
-
-    if (session === null) {
-      return null;
-    }
-
-    return (
-        <form
-        action={async () => {
-          'use server';
-          await signOut();
-        }}
-      >
-        return (<p>Welcome {session?.user?.name}!</p>)
-        <Button type='submit' className='w-full'>
-          <div className="hidden md:block">Sign Out</div>
-        </Button>
-      </form>
-    )
-}   
+  onClick={() => signOut()}>Sign Out</Button>
+}
