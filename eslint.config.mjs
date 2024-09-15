@@ -22,7 +22,7 @@ export default [
     },
     plugins: {
       '@typescript-eslint': typescript,
-      'react': jsx,
+      react: jsx,
     },
     rules: {
       // personaliza las reglas según lo necesario

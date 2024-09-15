@@ -1,15 +1,15 @@
 'use client';
+import { Menu as AdminMenu } from '@/app/ui/admin/menu';
+import { Menu as UserMenu } from '@/app/ui/menu';
 import {
-  Navbar as NavbarUI,
+  NavbarBrand,
   NavbarContent,
   NavbarMenu,
   NavbarMenuToggle,
-  NavbarBrand,
+  Navbar as NavbarUI,
 } from '@nextui-org/navbar';
 import NextLink from 'next/link';
 import { useState } from 'react';
-import { Menu as AdminMenu } from '@/app/ui/admin/menu';
-import { Menu as UserMenu } from '@/app/ui/menu';
 
 export const Navbar = ({ session }: { session: any }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para manejar la apertura del menú

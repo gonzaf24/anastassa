@@ -1,10 +1,9 @@
 'use client';
-import * as React from 'react';
 import { Button } from '@nextui-org/button';
 
+import Carousel from '@/components/carousel';
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { ProductsProps } from './product-list';
-import Carousel from '@/components/carousel';
 
 export function ProductDrawer({
   product,

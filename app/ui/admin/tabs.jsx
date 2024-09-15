@@ -1,5 +1,5 @@
 'use client';
-import { Tabs as TabsUI, Tab, Card, CardBody } from '@nextui-org/react';
+import { Card, CardBody, Tab, Tabs as TabsUI } from '@nextui-org/react';
 import Categories from './categories';
 import Products from './products';
 

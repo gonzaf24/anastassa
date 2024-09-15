@@ -1,5 +1,5 @@
-import { auth } from '@/auth';
 import Tabs from '@/app/ui/admin/tabs';
+import { auth } from '@/auth';
 
 export default async function Page() {
   const session = await auth();

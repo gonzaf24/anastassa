@@ -1,15 +1,15 @@
-import '@/app/ui/global.css';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { inter } from '@/app/ui/fonts';
-import { ReactNode } from 'react';
-import { Metadata } from 'next';
-import { Providers } from './providers';
-import { Navbar } from './ui/navbar';
-import { Menu as UserMenu } from './ui/menu';
-import Link from 'next/link';
-import { SessionProvider } from 'next-auth/react';
+import '@/app/ui/global.css';
 import { auth } from '@/auth';
+import { Metadata } from 'next';
+import { SessionProvider } from 'next-auth/react';
+import Link from 'next/link';
+import { ReactNode } from 'react';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
+import { Providers } from './providers';
 import { Menu as AdminMenu } from './ui/admin/menu';
+import { Menu as UserMenu } from './ui/menu';
+import { Navbar } from './ui/navbar';
 
 export const metadata: Metadata = {
   title: {

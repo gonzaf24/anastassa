@@ -1,11 +1,11 @@
 'use client';
 import {
   Table,
-  TableHeader,
   TableBody,
-  TableColumn,
-  TableRow,
   TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
 } from '@nextui-org/table';
 
 export default function Categories() {

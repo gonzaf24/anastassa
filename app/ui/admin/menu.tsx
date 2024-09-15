@@ -1,6 +1,6 @@
 import { Button } from '@nextui-org/react';
-import { SignOutButton } from '../sign-out-button';
 import Link from 'next/link';
+import { SignOutButton } from '../sign-out-button';
 
 export const Menu = () => {
   return (
