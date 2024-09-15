@@ -61,7 +61,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
 
       <Providers>
       <div className="relative flex flex-col h-screen">
-            <Navbar />
+            <Navbar session={session}/>
             <main className="container mx-auto max-w-7xl pt-0 px-6 sm:px-0 flex-grow flex flex-row gap-4 ">
               <div className="hidden sm:flex flex-col gap-4 max-w-[200px] w-full bg-[#ef8482]">
                 <UserMenu />

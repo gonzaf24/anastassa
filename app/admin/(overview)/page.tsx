@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import Tabs from "@/app/ui/admin/tabs";
 
 
 export default async function Page() {
@@ -7,11 +8,11 @@ export default async function Page() {
   if (!session) return <div>Not authenticated</div>
 
   return (
-    <main>
-      <h1 className={`mb-4 text-xl md:text-2xl`}>
-        Dashboard
-      </h1>
-     
+    <main className="w-full">
+      <p className="text-lg font-bold border-2 w-full text-center uppercase mb-4">
+        ADMINISTRACION
+      </p>
+      <Tabs />
     </main>
   );
 }

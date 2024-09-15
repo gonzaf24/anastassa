@@ -8,10 +8,10 @@ import {
 } from "@nextui-org/navbar";
 import NextLink from "next/link";
 import { useState } from "react";
+import { Menu as AdminMenu } from "@/app/ui/admin/menu";
+import { Menu as UserMenu } from "@/app/ui/menu";
 
-import { Menu } from "@/app/ui/menu";
-
-export const Navbar = () => {
+export const Navbar = ({session} : {session : any}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para manejar la apertura del menú
 
   const handleMenuToggle = () => {
@@ -65,7 +65,8 @@ export const Navbar = () => {
 
       <NavbarMenu className="px-0">
         <div className="flex flex-col gap-2 bg-[#ef8482] h-full">
-          <Menu onClose={handleCloseMenu} />
+          <UserMenu onClose={handleCloseMenu} />
+          {session && <AdminMenu />}
         </div>
       </NavbarMenu>
     </NavbarUI>
