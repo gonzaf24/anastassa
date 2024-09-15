@@ -1,14 +1,14 @@
 import js from '@eslint/js';
 import typescript from '@typescript-eslint/eslint-plugin';
 import parser from '@typescript-eslint/parser';
+import importPlugin from 'eslint-plugin-import';
+import prettier from 'eslint-plugin-prettier';
 import jsx from 'eslint-plugin-react';
 
 export default [
-  {
-    ignores: ['node_modules', '.next', 'dist', 'build'],
-  },
   js.configs.recommended,
   {
+    ignores: ['node_modules', '.next', 'dist', 'build'],
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       parser: parser,
@@ -23,9 +23,29 @@ export default [
     plugins: {
       '@typescript-eslint': typescript,
       react: jsx,
+      import: importPlugin,
+      prettier: prettier,
     },
     rules: {
-      // personaliza las reglas según lo necesario
+      'prettier/prettier': 'error',
+      'import/order': [
+        'error',
+        {
+          groups: ['builtin', 'external', 'internal'],
+          pathGroups: [
+            {
+              pattern: 'react',
+              group: 'external',
+              position: 'before',
+            },
+          ],
+          pathGroupsExcludedImportTypes: [],
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+        },
+      ],
     },
   },
 ];

@@ -16,7 +16,7 @@ export default function Categories() {
       aria-label="Categories table"
       fullWidth
       className="w-full"
-      color="warning"
+      color="primary"
     >
       <TableHeader className="bg-black">
         <TableColumn>Nombre cat.</TableColumn>

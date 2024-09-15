@@ -16,6 +16,7 @@ export default function Products() {
       aria-label="Products table"
       fullWidth
       className="w-full"
+      color="primary"
     >
       <TableHeader>
         <TableColumn>NAME</TableColumn>
