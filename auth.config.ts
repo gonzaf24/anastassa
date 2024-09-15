@@ -4,7 +4,6 @@ import { DefaultSession, Session } from 'next-auth';
 export const authConfig = {
   pages: {
     signIn: '/login',
-    signOut: '/',
   },
   providers: [
     // added later in auth.ts since it requires bcrypt which is only compatible with Node.js
@@ -19,6 +18,12 @@ export const authConfig = {
         session.user.id = token.sub;
       }
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      // Redirect to the same URL if it's already absolute
+      if (url.startsWith(baseUrl)) return url;
+      if (url.startsWith('/')) return new URL(url, baseUrl).toString();
+      return baseUrl;
     },
   },
 } satisfies NextAuthConfig;
