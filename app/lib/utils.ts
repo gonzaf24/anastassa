@@ -1,4 +1,3 @@
-
 export const formatCurrency = (amount: number) => {
   return (amount / 100).toLocaleString('en-US', {
     style: 'currency',
@@ -8,7 +7,7 @@ export const formatCurrency = (amount: number) => {
 
 export const formatDateToLocal = (
   dateStr: string,
-  locale: string = 'en-US',
+  locale: string = 'en-US'
 ) => {
   const date = new Date(dateStr);
   const options: Intl.DateTimeFormatOptions = {
@@ -58,13 +57,13 @@ export function parseCategoryParam(input: string): {
   textPart: string;
 } {
   // Divide la cadena por el último "-"
-  const parts = input.split("-");
+  const parts = input.split('-');
 
   // Extrae el número, que siempre es el último elemento y conviértelo a un número
-  const numberPart = parseInt(parts.pop() || "0", 10);
+  const numberPart = parseInt(parts.pop() || '0', 10);
 
   // Los elementos restantes son las palabras, únelas con espacios
-  const textPart = parts.join(" ");
+  const textPart = parts.join(' ');
 
   return { numberPart, textPart };
 }

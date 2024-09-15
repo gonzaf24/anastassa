@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-"use client";
+'use client';
 
-import { Carousel as CarouselUI } from "react-responsive-carousel";
+import { Carousel as CarouselUI } from 'react-responsive-carousel';
 
-import styles from "./carousel.module.css";
+import styles from './carousel.module.css';
 
-import { CarouselProps } from "@/app/lib/definitions";
+import { CarouselProps } from '@/app/lib/definitions';
 
 export default function Carousel({ photos }: CarouselProps) {
   if (!photos) {

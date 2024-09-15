@@ -1,17 +1,17 @@
-"use client";
+'use client';
 import {
   Navbar as NavbarUI,
   NavbarContent,
   NavbarMenu,
   NavbarMenuToggle,
   NavbarBrand,
-} from "@nextui-org/navbar";
-import NextLink from "next/link";
-import { useState } from "react";
-import { Menu as AdminMenu } from "@/app/ui/admin/menu";
-import { Menu as UserMenu } from "@/app/ui/menu";
+} from '@nextui-org/navbar';
+import NextLink from 'next/link';
+import { useState } from 'react';
+import { Menu as AdminMenu } from '@/app/ui/admin/menu';
+import { Menu as UserMenu } from '@/app/ui/menu';
 
-export const Navbar = ({session} : {session : any}) => {
+export const Navbar = ({ session }: { session: any }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para manejar la apertura del menú
 
   const handleMenuToggle = () => {
@@ -25,7 +25,7 @@ export const Navbar = ({session} : {session : any}) => {
   return (
     <NavbarUI
       classNames={{
-        base: "gap-6",
+        base: 'gap-6',
       }}
       height="100px"
       isMenuOpen={isMenuOpen} // Controla la apertura del menú

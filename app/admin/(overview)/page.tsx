@@ -1,11 +1,10 @@
-import { auth } from "@/auth";
-import Tabs from "@/app/ui/admin/tabs";
-
+import { auth } from '@/auth';
+import Tabs from '@/app/ui/admin/tabs';
 
 export default async function Page() {
-  const session = await auth()
- 
-  if (!session) return <div>Not authenticated</div>
+  const session = await auth();
+
+  if (!session) return <div>Not authenticated</div>;
 
   return (
     <main className="w-full">

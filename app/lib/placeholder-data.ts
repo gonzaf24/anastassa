@@ -7,4 +7,4 @@ const users = [
   },
 ];
 
-export { users};
+export { users };

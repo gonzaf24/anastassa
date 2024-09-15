@@ -1,11 +1,10 @@
-"use client";
-import { Button } from "@nextui-org/button";
-import Link from "next/link";
+'use client';
+import { Button } from '@nextui-org/button';
+import Link from 'next/link';
 
-import { categories } from "@/app/lib/hardcoded-data";
+import { categories } from '@/app/lib/hardcoded-data';
 
 export const Menu = ({ onClose }: { onClose?: () => void }) => {
-
   const handleCloseMenu = () => {
     if (onClose) {
       onClose();

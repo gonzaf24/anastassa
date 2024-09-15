@@ -11,7 +11,7 @@ export const authConfig = {
   ],
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      return !!auth
+      return !!auth;
     },
     async session({ session, token }): Promise<Session | DefaultSession> {
       if (session.user && token.sub) {

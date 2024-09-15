@@ -14,7 +14,7 @@ import { Button } from '@nextui-org/react';
 export default function LoginForm() {
   const [errorMessage, formAction, isPending] = useActionState(
     authenticate,
-    undefined,
+    undefined
   );
 
   return (
@@ -64,7 +64,7 @@ export default function LoginForm() {
             </div>
           </div>
         </div>
-        <Button type='submit' className="mt-4 w-full" aria-disabled={isPending}>
+        <Button type="submit" className="mt-4 w-full" aria-disabled={isPending}>
           Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
         </Button>
         <div

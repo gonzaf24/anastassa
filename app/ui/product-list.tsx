@@ -1,8 +1,8 @@
-"use client";
-import React, { useState } from "react";
+'use client';
+import React, { useState } from 'react';
 
-import ProductCard from "@/app/ui/product-card";
-import { ProductDrawer } from "@/app/ui/product-drawer";
+import ProductCard from '@/app/ui/product-card';
+import { ProductDrawer } from '@/app/ui/product-drawer';
 
 export type ProductsProps = {
   id: number;

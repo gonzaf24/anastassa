@@ -1,5 +1,5 @@
 import ProductList from './ui/product-list';
-import { productos } from "@/app/lib/hardcoded-data";
+import { productos } from '@/app/lib/hardcoded-data';
 
 export default function Page() {
   return (

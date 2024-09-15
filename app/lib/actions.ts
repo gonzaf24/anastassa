@@ -75,7 +75,7 @@ export async function createInvoice(prevState: State, formData: FormData) {
 export async function updateInvoice(
   id: string,
   prevState: State,
-  formData: FormData,
+  formData: FormData
 ) {
   const validatedFields = UpdateInvoice.safeParse({
     customerId: formData.get('customerId'),
@@ -121,7 +121,7 @@ export async function deleteInvoice(id: string) {
 
 export async function authenticate(
   prevState: string | undefined,
-  formData: FormData,
+  formData: FormData
 ) {
   try {
     await signIn('credentials', formData);

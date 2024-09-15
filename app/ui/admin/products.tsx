@@ -1,11 +1,22 @@
-'use client'
-import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell} from "@nextui-org/table";
-
+'use client';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableColumn,
+  TableRow,
+  TableCell,
+} from '@nextui-org/table';
 
 export default function Products() {
-
-    return (
-        <Table aria-label="Example static collection table" fullWidth className="w-full max-w-max">
+  return (
+    <Table
+      selectionMode="single"
+      isStriped
+      aria-label="Products table"
+      fullWidth
+      className="w-full"
+    >
       <TableHeader>
         <TableColumn>NAME</TableColumn>
         <TableColumn>ROLE</TableColumn>
@@ -34,4 +45,5 @@ export default function Products() {
         </TableRow>
       </TableBody>
     </Table>
-    )}
+  );
+}
