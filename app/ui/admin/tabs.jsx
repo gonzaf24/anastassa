@@ -11,10 +11,10 @@ export default function Tabs() {
         aria-label="Options"
         color="primary"
         className="font-bold"
+        radius="none"
       >
         <Tab key="productos" title="PRODUCTOS">
           <Products />
-          
         </Tab>
         <Tab key="categorias" title="CATEGORIAS">
           <Categories />

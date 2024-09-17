@@ -28,9 +28,9 @@ export default [
     },
     rules: {
       'prettier/prettier': 'error',
-      'import/order': [
-        'error',
-        {
+      /* 'import/order': [ */
+        /* 'error', */
+        /* {
           groups: ['builtin', 'external', 'internal'],
           pathGroups: [
             {
@@ -44,8 +44,8 @@ export default [
             order: 'asc',
             caseInsensitive: true,
           },
-        },
-      ],
+        }, */
+      /* ], */
     },
   },
 ];

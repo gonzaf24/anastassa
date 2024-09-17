@@ -1,11 +1,11 @@
 'use client';
 import { Button } from '@nextui-org/react';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 
 export function SignOutButton() {
-  const { data: session, update, status } = useSession();
+  /* const { data: session, update, status } = useSession();
 
-  console.log('statussss ', status);
+  console.log('statussss ', status); */
 
   return (
     <Button
