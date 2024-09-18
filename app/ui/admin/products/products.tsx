@@ -17,7 +17,7 @@ export default function Products() {
     <>
       <Modal
         buttonTitle="Nuevo Producto"
-        children={undefined}
+        children={<div />}
         modalTitle="Nuevo Producto"
       />
       <Table

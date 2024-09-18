@@ -30,7 +30,7 @@ export function ProductDrawer({
               REF: {product.ref}
             </p>
             <p className="text-tiny font-bold w-full text-left uppercase text-ellipsis whitespace-nowrap	overflow-hidden">
-              {product.title}
+              {product.description}
             </p>
           </div>
         </div>

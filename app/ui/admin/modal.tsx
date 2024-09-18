@@ -30,18 +30,13 @@ export default function Modal({
     onOpenChange: internalOnOpenChange,
   } = useDisclosure();
 
-  // Use controlled or internal state
-  const isOpen =
-    controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
-  const onOpenChange =
-    controlledOnOpenChange !== undefined
-      ? controlledOnOpenChange
-      : internalOnOpenChange;
+  // Prefer controlled state when available
+  const isOpen = controlledIsOpen ?? internalIsOpen;
+  const onOpenChange = controlledOnOpenChange ?? internalOnOpenChange;
 
   return (
     <>
-      {/* Render the button only if it's uncontrolled */}
-      {!controlledIsOpen && (
+      {buttonTitle && (
         <Button
           color="primary"
           className="font-bold rounded-none"
@@ -56,7 +51,7 @@ export default function Modal({
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         isDismissable={false}
-        hideCloseButton={true}
+        hideCloseButton
         backdrop="blur"
       >
         <ModalContent>
@@ -72,10 +67,9 @@ export default function Modal({
                 </Button>
               </ModalHeader>
               <ModalBody>
-                {children &&
-                  React.cloneElement(children as React.ReactElement, {
-                    onClose,
-                  })}
+                {React.cloneElement(children as React.ReactElement, {
+                  onClose,
+                })}
               </ModalBody>
             </>
           )}

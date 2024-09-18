@@ -25,7 +25,7 @@ type LayoutProps = {
   params: { locale: string };
 };
 
-export default async function RootLayout({ children, params }: LayoutProps) {
+export default async function RootLayout({ children }: LayoutProps) {
   const session = await auth();
 
   return (
