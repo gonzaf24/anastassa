@@ -1,4 +1,4 @@
-import { productos } from '@/app/lib/hardcoded-data';
+import { ProductsData } from '@/app/lib/hardcoded-data';
 import ProductList from './ui/product-list';
 
 export default function Page() {
@@ -7,7 +7,7 @@ export default function Page() {
       <p className="text-lg font-bold border-2 w-full text-center uppercase">
         TODAS LAS PRENDAS
       </p>
-      <ProductList products={productos} />
+      <ProductList products={ProductsData} />
     </section>
   );
 }

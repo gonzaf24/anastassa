@@ -12,6 +12,7 @@ export default function CategoryPage({
       <p className="text-lg font-bold border-2 w-full text-center">
         {textPart}
       </p>
+      {numberPart}
     </section>
   );
 }

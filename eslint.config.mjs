@@ -11,6 +11,13 @@ export default [
     ignores: ['node_modules', '.next', 'dist', 'build'],
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
+      globals: {
+        HTMLFormElement: true,
+        console: true,
+        FormData: true,
+        HTMLDivElement: true,
+        URL: true,
+      },
       parser: parser,
       parserOptions: {
         ecmaVersion: 'latest',
@@ -29,8 +36,8 @@ export default [
     rules: {
       'prettier/prettier': 'error',
       /* 'import/order': [ */
-        /* 'error', */
-        /* {
+      /* 'error', */
+      /* {
           groups: ['builtin', 'external', 'internal'],
           pathGroups: [
             {

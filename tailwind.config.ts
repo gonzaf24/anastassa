@@ -14,6 +14,7 @@ const config: Config = {
         '13': 'repeat(13, minmax(0, 1fr))',
       },
       colors: {
+        focus: 'hsl(var(--black))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -70,11 +71,7 @@ const config: Config = {
     },
   },
   darkMode: ['class', 'class'],
-  plugins: [
-    nextui(),
-    require('@tailwindcss/forms'),
-    require('tailwindcss-animate'),
-  ],
+  plugins: [nextui()],
 };
 
 export default config;

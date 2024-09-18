@@ -2,65 +2,81 @@ import {
   Button,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   Modal as ModalUI,
   useDisclosure,
 } from '@nextui-org/react';
+import React, { ReactNode } from 'react';
 
-export default function Modal({ buttonTitle }: { buttonTitle: string }) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+interface ModalProps {
+  children: ReactNode;
+  buttonTitle?: string;
+  modalTitle: string;
+  isOpen?: boolean;
+  // eslint-disable-next-line no-unused-vars
+  onOpenChange?: (isOpen: boolean) => void;
+}
+
+export default function Modal({
+  children,
+  buttonTitle,
+  modalTitle,
+  isOpen: controlledIsOpen,
+  onOpenChange: controlledOnOpenChange,
+}: ModalProps) {
+  const {
+    isOpen: internalIsOpen,
+    onOpen,
+    onOpenChange: internalOnOpenChange,
+  } = useDisclosure();
+
+  // Use controlled or internal state
+  const isOpen =
+    controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
+  const onOpenChange =
+    controlledOnOpenChange !== undefined
+      ? controlledOnOpenChange
+      : internalOnOpenChange;
 
   return (
     <>
-      <Button
-        color="primary"
-        className="font-bold rounded-none"
-        onPress={onOpen}
-      >
-        <img alt="add" className="w-4" src="/plus.svg" />
-        {buttonTitle}
-      </Button>
+      {/* Render the button only if it's uncontrolled */}
+      {!controlledIsOpen && (
+        <Button
+          color="primary"
+          className="font-bold rounded-none"
+          onPress={onOpen}
+        >
+          <img alt="add" className="w-4" src="/plus.svg" />
+          {buttonTitle}
+        </Button>
+      )}
+
       <ModalUI
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         isDismissable={false}
-        isKeyboardDismissDisabled={true}
+        hideCloseButton={true}
+        backdrop="blur"
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                Modal Title
+              <ModalHeader className="flex justify-between items-center">
+                <p>{modalTitle}</p>
+                <Button
+                  className="bg-transparent p-1 h-min min-w-min rounded-full"
+                  onClick={onClose}
+                >
+                  <img alt="close" className="w-8" src="/close.svg" />
+                </Button>
               </ModalHeader>
               <ModalBody>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat
-                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                  aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                  nisi consectetur esse laborum eiusmod pariatur proident Lorem
-                  eiusmod et. Culpa deserunt nostrud ad veniam.
-                </p>
+                {children &&
+                  React.cloneElement(children as React.ReactElement, {
+                    onClose,
+                  })}
               </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
-                </Button>
-              </ModalFooter>
             </>
           )}
         </ModalContent>

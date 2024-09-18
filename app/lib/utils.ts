@@ -56,14 +56,19 @@ export function parseCategoryParam(input: string): {
   numberPart: number;
   textPart: string;
 } {
-  // Divide la cadena por el último "-"
-  const parts = input.split('-');
+  console.log('input', input);
 
-  // Extrae el número, que siempre es el último elemento y conviértelo a un número
+  // Decode the input to handle %20 (spaces) and other URL-encoded characters
+  const decodedInput = decodeURIComponent(input);
+
+  // Divide the string by the last "-"
+  const parts = decodedInput.split('-');
+
+  // Extract the number part, which is the last element, and convert it to a number
   const numberPart = parseInt(parts.pop() || '0', 10);
 
-  // Los elementos restantes son las palabras, únelas con espacios
-  const textPart = parts.join(' ');
+  // The remaining part is the text, so join it back with spaces
+  const textPart = parts.join(' ').trim();
 
   return { numberPart, textPart };
 }

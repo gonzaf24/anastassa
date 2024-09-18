@@ -8,7 +8,8 @@ export type ProductsProps = {
   id: number;
   photos: string[];
   ref: number;
-  title: string;
+  categoryId: number;
+  description: string;
 };
 
 export default function ProductList({
