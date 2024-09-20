@@ -10,6 +10,7 @@ export const authConfig = {
     // while this file is also used in non-Node.js environments
   ],
   callbacks: {
+    // eslint-disable-next-line no-unused-vars
     authorized({ auth, request: { nextUrl } }) {
       return !!auth;
     },

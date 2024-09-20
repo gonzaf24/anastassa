@@ -56,14 +56,14 @@ export default async function RootLayout({ children }: LayoutProps) {
       <body className={`${inter.className} antialiased`}>
         <SessionProvider session={session}>
           <Providers>
-            <div className="relative flex flex-col h-screen">
+            <div className="relative flex flex-col">
               <Navbar session={session} />
-              <main className="container mx-auto max-w-7xl pt-0 px-6 sm:px-0 flex-grow flex flex-row gap-4 ">
+              <main className="container mx-auto max-w-7xl pt-0 px-6 sm:px-0 flex-grow flex flex-row gap-4 min-h-84">
                 <div className="hidden sm:flex flex-col gap-4 max-w-[200px] w-full bg-[#ef8482]">
                   <UserMenu />
                   {session && <AdminMenu />}
                 </div>
-                <div className="flex flex-col w-full  gap-4">{children}</div>
+                <div className="flex flex-col w-full gap-4">{children}</div>
               </main>
               <footer className="w-full flex items-center justify-center py-3 gap-2">
                 <Link

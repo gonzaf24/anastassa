@@ -11,7 +11,9 @@
   "dependencies": {
     "@heroicons/react": "^2.1.4",
     "@nextui-org/react": "0.0.0-canary-20240913061156",
+    "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.1",
+    "@radix-ui/react-slot": "^1.1.0",
     "@tailwindcss/forms": "^0.5.7",
     "@vercel/postgres": "^0.8.0",
     "autoprefixer": "10.4.19",

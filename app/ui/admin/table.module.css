@@ -2,6 +2,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  height: 62dvh;
 }
 
 .table th:first-child,

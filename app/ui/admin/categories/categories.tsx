@@ -1,6 +1,6 @@
+/* eslint-disable no-unused-vars */
 'use client';
 import { CategoryProps } from '@/app/lib/definitions';
-import { CategoriesData } from '@/app/lib/hardcoded-data';
 import Modal from '@/app/ui/admin/modal';
 import styles from '@/app/ui/admin/table.module.css';
 import { Button } from '@nextui-org/react';
@@ -13,33 +13,44 @@ import {
   TableRow,
 } from '@nextui-org/table';
 import { useState } from 'react';
-import EditCategoryForm from './edit-category-form';
-import NewCategoryForm from './new-category-form';
+import NewCategoryForm from './create-category-form';
+import EditCategoryForm from './update-category-form';
 
-export default function Categories() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(null) as any;
+import DeleteCategory from './delete-category';
+export default function Categories({
+  categories,
+}: {
+  categories: CategoryProps[];
+}) {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryProps | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    setIsEditModalOpen(false);
+  };
+
+  const handleDeleteCategory = (category: CategoryProps) => {
+    setSelectedCategory(category);
+    setIsAlertDialogOpen((prev) => !prev);
   };
 
   const handleEditCategory = (category: CategoryProps) => {
     setSelectedCategory(category);
-    handleOpenModal();
+    setIsEditModalOpen(true);
   };
 
   return (
     <div className="text-end">
       <Modal buttonTitle="Nueva Categoría" modalTitle="Nueva Categoría">
-        <NewCategoryForm onClose={function (): void {}} />
+        <NewCategoryForm />
       </Modal>
       <Modal
-        isOpen={isModalOpen}
-        onOpenChange={setIsModalOpen}
+        isOpen={isEditModalOpen}
+        onOpenChange={setIsEditModalOpen}
         modalTitle="Editar Categoría"
       >
         <EditCategoryForm
@@ -47,17 +58,23 @@ export default function Categories() {
           onClose={handleCloseModal}
         />
       </Modal>
+      <DeleteCategory
+        isAlertOpen={isAlertDialogOpen}
+        category={selectedCategory}
+        setIsAlertDialogOpen={setIsAlertDialogOpen}
+      />
       <Table
         selectionMode="single"
         isStriped
         aria-label="Categories table"
         fullWidth
+        isHeaderSticky
         className={styles.table}
         color="primary"
         radius="none"
         classNames={{
           wrapper: 'p-0',
-          th: 'bg-primary/75 font-bold text-black rounded-none border-1',
+          th: 'bg-primary font-bold text-black rounded-none border-1',
           td: 'rounded-none border-1',
         }}
       >
@@ -69,8 +86,8 @@ export default function Categories() {
           <TableColumn width={20}>Eliminar</TableColumn>
         </TableHeader>
         <TableBody>
-          {CategoriesData &&
-            CategoriesData.map((category) => (
+          {categories &&
+            categories.map((category) => (
               <TableRow key={category.id}>
                 <TableCell>{category.name}</TableCell>
                 <TableCell>{category.position}</TableCell>
@@ -84,7 +101,10 @@ export default function Categories() {
                   </Button>
                 </TableCell>
                 <TableCell className="text-center">
-                  <Button className="bg-transparent p-1 min-w-min">
+                  <Button
+                    className="bg-transparent p-1 min-w-min"
+                    onPress={() => handleDeleteCategory(category)}
+                  >
                     <img alt="delete" className="w-7" src="/delete.svg" />
                   </Button>
                 </TableCell>

@@ -7,60 +7,55 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-const FormSchema = z.object({
-  id: z.string(),
-  customerId: z.string({
-    invalid_type_error: 'Please select a customer.',
+const CreateCategoryFormSchema = z.object({
+  name: z.string().nonempty({
+    message: 'Please enter a name.',
   }),
-  amount: z.coerce
-    .number()
-    .gt(0, { message: 'Please enter an amount greater than $0.' }),
-  status: z.enum(['pending', 'paid'], {
-    invalid_type_error: 'Please select an invoice status.',
-  }),
-  date: z.string(),
+  position: z.string().nonempty({ message: 'Position is required' }),
 });
 
-const CreateInvoice = FormSchema.omit({ id: true, date: true });
-const UpdateInvoice = FormSchema.omit({ date: true, id: true });
+const UpdateCategorySchema = z.object({
+  id: z.string().nonempty({ message: 'ID is required' }),
+  name: z.string().nonempty({
+    message: 'Please enter a name.',
+  }),
+  position: z.string().nonempty({ message: 'Position is required' }),
+});
 
-export type State = {
+export type CategoryState = {
   errors?: {
-    customerId?: string[];
-    amount?: string[];
-    status?: string[];
+    name?: string[];
+    position?: string[];
   };
   message?: string | null;
 };
 
-export async function createInvoice(prevState: State, formData: FormData) {
+export async function createCategory(
+  prevState: CategoryState,
+  formData: FormData
+) {
   // Validate form fields using Zod
-  const validatedFields = CreateInvoice.safeParse({
-    customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
-    status: formData.get('status'),
+  const validatedFields = CreateCategoryFormSchema.safeParse({
+    name: formData.get('name'),
+    position: formData.get('position'),
   });
-
   // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create Invoice.',
+      message: 'Missing Fields. Failed to Create Category.',
     };
   }
-
   // Prepare data for insertion into the database
-  const { customerId, amount, status } = validatedFields.data;
-  const amountInCents = amount * 100;
-  const date = new Date().toISOString().split('T')[0];
-
+  const { name, position } = validatedFields.data;
   // Insert data into the database
   try {
     await sql`
-      INSERT INTO invoices (customer_id, amount, status, date)
-      VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
+      INSERT INTO categories (name, position)
+      VALUES (${name}, ${position})
     `;
   } catch (error) {
+    console.error('Database Error:', error);
     // If a database error occurs, return a more specific error.
     return {
       message: 'Database Error: Failed to Create Invoice.',
@@ -68,55 +63,59 @@ export async function createInvoice(prevState: State, formData: FormData) {
   }
 
   // Revalidate the cache for the invoices page and redirect the user.
-  revalidatePath('/admin/invoices');
-  redirect('/admin/invoices');
+  revalidatePath('/admin');
+  redirect('/admin');
 }
 
-export async function updateInvoice(
-  id: string,
-  prevState: State,
+export async function updateCategory(
+  prevState: CategoryState,
   formData: FormData
 ) {
-  const validatedFields = UpdateInvoice.safeParse({
-    customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
-    status: formData.get('status'),
+  // Validate form fields using Zod
+  const validatedFields = UpdateCategorySchema.safeParse({
+    name: formData.get('name'),
+    position: formData.get('position'),
+    id: formData.get('id'),
   });
-
+  // If form validation fails, return errors early. Otherwise, continue.
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Update Invoice.',
+      message: 'Missing Fields. Failed to Update Category.',
     };
   }
-
-  const { customerId, amount, status } = validatedFields.data;
-  const amountInCents = amount * 100;
-
+  // Prepare data for insertion into the database
+  const { name, position, id } = validatedFields.data;
+  // Update data in the database
   try {
     await sql`
-      UPDATE invoices
-      SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
+      UPDATE categories
+      SET name = ${name}, position = ${position}
       WHERE id = ${id}
     `;
   } catch (error) {
-    return { message: 'Database Error: Failed to Update Invoice.' };
+    console.error('Database Error:', error);
+    // If a database error occurs, return a more specific error.
+    return {
+      message: 'Database Error: Failed to Update Category.',
+    };
   }
-
-  revalidatePath('/admin/invoices');
-  redirect('/admin/invoices');
+  // Revalidate the cache for the invoices page and redirect the user.
+  revalidatePath('/admin');
+  redirect('/admin');
 }
 
-export async function deleteInvoice(id: string) {
-  // throw new Error('Failed to Delete Invoice');
-
+export async function deleteCategory(id: number) {
   try {
-    await sql`DELETE FROM invoices WHERE id = ${id}`;
-    revalidatePath('/admin/invoices');
-    return { message: 'Deleted Invoice' };
+    await sql`DELETE FROM categories WHERE id = ${id}`;
   } catch (error) {
-    return { message: 'Database Error: Failed to Delete Invoice.' };
+    console.error('Database Error:', error);
+    return {
+      message: 'Database Error: Failed to Delete Category.',
+    };
   }
+  revalidatePath('/admin');
+  redirect('/admin');
 }
 
 export async function authenticate(

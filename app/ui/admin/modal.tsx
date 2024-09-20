@@ -36,7 +36,7 @@ export default function Modal({
 
   return (
     <>
-      {buttonTitle && (
+      {buttonTitle && !controlledIsOpen && (
         <Button
           color="primary"
           className="font-bold rounded-none"

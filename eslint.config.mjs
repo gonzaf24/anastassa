@@ -17,6 +17,8 @@ export default [
         FormData: true,
         HTMLDivElement: true,
         URL: true,
+        module: true,
+        Response: true,
       },
       parser: parser,
       parserOptions: {

@@ -1,10 +1,11 @@
 'use client';
 
+import { CategoryProps } from '@/app/lib/definitions';
 import { Tab, Tabs as TabsUI } from '@nextui-org/react';
 import Categories from './categories/categories';
 import Products from './products/products';
 
-export default function Tabs() {
+export default function Tabs({ categories }: { categories: CategoryProps[] }) {
   return (
     <div className="flex w-full flex-col">
       <TabsUI
@@ -18,7 +19,7 @@ export default function Tabs() {
           <Products />
         </Tab>
         <Tab key="categorias" title="CATEGORIAS">
-          <Categories />
+          <Categories categories={categories} />
         </Tab>
       </TabsUI>
     </div>

@@ -1,5 +1,6 @@
 import { db } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
+import { CategoriesData } from '../lib/hardcoded-data';
 import { users } from '../lib/placeholder-data';
 
 const client = await db.connect();
@@ -29,6 +30,55 @@ async function seedUsers() {
   return insertedUsers;
 }
 
+async function seedCategories() {
+  try {
+    // Crear la secuencia "categories_id_seq" si no existe
+    const createIdSequence = await client.sql`
+    CREATE SEQUENCE categories_id_seq
+    INCREMENT 1
+    MINVALUE 100
+    MAXVALUE 999999
+    START 100
+    CACHE 1;
+  `;
+
+    // Crear la tabla "categories" si no existe
+    const createCategoryTable = await client.sql`
+    CREATE TABLE IF NOT EXISTS categories (
+      id INTEGER DEFAULT nextval('categories_id_seq') PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      position INTEGER NOT NULL
+    );
+  `;
+
+    console.log(`Created "categories" table`);
+
+    // Insertar datos en la tabla "places"
+    const insertedCategories = await Promise.all(
+      CategoriesData.map(async (category) => {
+        return client.sql`
+          INSERT INTO categories (name , position)
+          VALUES (
+            ${category.name},
+            ${category.position}
+          )
+          ON CONFLICT (id) DO NOTHING;
+          `;
+      })
+    );
+
+    console.log(`Seeded ${insertedCategories.length} places`);
+
+    return {
+      createIdSequence,
+      createCategoryTable,
+    };
+  } catch (error) {
+    console.error('Error creating tables:', error);
+    throw error;
+  }
+}
+
 export async function GET() {
   /*  return Response.json({
     message:
@@ -37,6 +87,7 @@ export async function GET() {
   try {
     await client.sql`BEGIN`;
     await seedUsers();
+    await seedCategories();
     await client.sql`COMMIT`;
 
     return Response.json({ message: 'Database seeded successfully' });
