@@ -1,6 +1,6 @@
 import { db } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
-import { CategoriesData } from '../lib/hardcoded-data';
+import { CategoriesData, ProductsData } from '../lib/hardcoded-data';
 import { users } from '../lib/placeholder-data';
 
 const client = await db.connect();
@@ -53,7 +53,7 @@ async function seedCategories() {
 
     console.log(`Created "categories" table`);
 
-    // Insertar datos en la tabla "places"
+    // Insertar datos en la tabla "categories"
     const insertedCategories = await Promise.all(
       CategoriesData.map(async (category) => {
         return client.sql`
@@ -67,11 +67,65 @@ async function seedCategories() {
       })
     );
 
-    console.log(`Seeded ${insertedCategories.length} places`);
+    console.log(`Seeded ${insertedCategories.length} categories`);
 
     return {
       createIdSequence,
       createCategoryTable,
+    };
+  } catch (error) {
+    console.error('Error creating tables:', error);
+    throw error;
+  }
+}
+
+async function seedProducts() {
+  try {
+    // Crear la secuencia "custom_id_seq" si no existe
+    const createIdSequence = await client.sql`
+    CREATE SEQUENCE product_id_seq
+    INCREMENT 1
+    MINVALUE 1000
+    MAXVALUE 999999
+    START 1000
+    CACHE 1;
+  `;
+
+    // Crear la tabla "products" si no existe
+    const createProductTable = await client.sql`
+    CREATE TABLE IF NOT EXISTS products (
+      id INTEGER DEFAULT nextval('product_id_seq') PRIMARY KEY,
+      category_id INTEGER REFERENCES categories(id),
+      description TEXT,
+      ref INTEGER NOT NULL,
+      photos TEXT[],
+      date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `;
+
+    console.log(`Created "products" table`);
+
+    // Insertar datos en la tabla "products"
+    const insertedProducts = await Promise.all(
+      ProductsData.map(async (product) => {
+        return client.sql`
+          INSERT INTO products (category_id, description, ref, photos)
+          VALUES (
+            ${product.categoryId},
+            ${product.description},
+            ${product.ref},
+            ARRAY[${product.photos.map((photo) => `'${photo}'`).join(', ')}]::TEXT[]
+          )
+          ON CONFLICT (id) DO NOTHING;
+          `;
+      })
+    );
+
+    console.log(`Seeded ${insertedProducts.length} products`);
+
+    return {
+      createIdSequence,
+      createProductTable,
     };
   } catch (error) {
     console.error('Error creating tables:', error);
@@ -88,6 +142,7 @@ export async function GET() {
     await client.sql`BEGIN`;
     await seedUsers();
     await seedCategories();
+    await seedProducts();
     await client.sql`COMMIT`;
 
     return Response.json({ message: 'Database seeded successfully' });

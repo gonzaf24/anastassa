@@ -19,6 +19,9 @@ export default [
         URL: true,
         module: true,
         Response: true,
+        Request: true,
+        File: true,
+        HTMLInputElement: true,
       },
       parser: parser,
       parserOptions: {

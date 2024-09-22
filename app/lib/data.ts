@@ -13,3 +13,14 @@ export const fetchCategoriesData = async () => {
     return [];
   }
 };
+
+export const fetchProductsData = async () => {
+  noStore();
+  try {
+    const data = await sql`SELECT * FROM products ORDER BY category_id ASC`;
+    return data.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    return [];
+  }
+};

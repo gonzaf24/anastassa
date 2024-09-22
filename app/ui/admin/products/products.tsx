@@ -1,4 +1,5 @@
 'use client';
+import { CategoryProps } from '@/app/lib/definitions';
 import { ProductsData } from '@/app/lib/hardcoded-data';
 import Modal from '@/app/ui/admin/modal';
 import styles from '@/app/ui/admin/table.module.css';
@@ -11,15 +12,18 @@ import {
   TableHeader,
   TableRow,
 } from '@nextui-org/table';
+import CreateProductForm from './create-product-form';
 
-export default function Products() {
+export default function Products({
+  categories,
+}: {
+  categories: CategoryProps[];
+}) {
   return (
     <>
-      <Modal
-        buttonTitle="Nuevo Producto"
-        children={<div />}
-        modalTitle="Nuevo Producto"
-      />
+      <Modal buttonTitle="Nuevo Producto" modalTitle="Nuevo Producto">
+        <CreateProductForm categories={categories} />
+      </Modal>
       <Table
         selectionMode="single"
         aria-label="Products table"

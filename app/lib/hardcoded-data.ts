@@ -53,7 +53,7 @@ export const CategoriesData = [
 
 export const ProductsData = [
   {
-    id: 1,
+    id: 1000,
     photos: [
       '/productos/1.jpg',
       '/productos/2.jpg',
@@ -66,49 +66,49 @@ export const ProductsData = [
     description: 'PONCHOS LIVIANOS',
   },
   {
-    id: 2,
+    id: 1001,
     photos: ['/productos/6.jpg'],
     ref: 104,
     categoryId: 101,
     description: 'SWEATERS TEJIDO NUDE',
   },
   {
-    id: 3,
+    id: 1002,
     photos: ['/productos/7.jpg'],
     ref: 100,
     categoryId: 102,
     description: 'PANTALON CUERO VEGANO',
   },
   {
-    id: 4,
+    id: 1003,
     photos: ['/productos/8.jpg'],
     ref: 555,
     categoryId: 103,
     description: 'VESTIDO DE ALGODON TURQUESA DESIGUAL',
   },
   {
-    id: 5,
+    id: 1004,
     photos: ['/productos/4.jpg'],
     ref: 194,
     categoryId: 103,
     description: 'SWEATERS TEJIDOS',
   },
   {
-    id: 6,
+    id: 1005,
     photos: ['/productos/5.jpg', '/productos/6.jpg'],
     ref: 166,
     categoryId: 106,
     description: 'TAPADOS',
   },
   {
-    id: 7,
+    id: 1006,
     photos: ['/productos/7.jpg'],
     ref: 177,
     categoryId: 106,
     description: 'PASHMINA',
   },
   {
-    id: 8,
+    id: 1007,
     photos: ['/productos/8.jpg'],
     ref: 154,
     categoryId: 107,

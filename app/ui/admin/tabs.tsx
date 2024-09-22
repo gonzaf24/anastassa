@@ -16,7 +16,7 @@ export default function Tabs({ categories }: { categories: CategoryProps[] }) {
         radius="none"
       >
         <Tab key="productos" title="PRODUCTOS">
-          <Products />
+          <Products categories={categories} />
         </Tab>
         <Tab key="categorias" title="CATEGORIAS">
           <Categories categories={categories} />

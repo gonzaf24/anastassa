@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export type User = {
   id: string;
   name: string;
@@ -14,3 +15,9 @@ export type CategoryProps = {
   name: string;
   position: number;
 };
+
+export interface FileUploadProps {
+  file: string | undefined;
+  setFile: (file: string | undefined) => void;
+  top?: boolean;
+}

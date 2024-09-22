@@ -22,10 +22,29 @@ const UpdateCategorySchema = z.object({
   position: z.string().nonempty({ message: 'Position is required' }),
 });
 
+const CreateProductFormSchema = z.object({
+  categoryId: z.string().nonempty({
+    message: 'Please select a category.',
+  }),
+  ref: z.string().nonempty({
+    message: 'Please enter a reference.',
+  }),
+  description: z.string().nonempty({ message: 'Description is required' }),
+});
+
 export type CategoryState = {
   errors?: {
     name?: string[];
     position?: string[];
+  };
+  message?: string | null;
+};
+
+export type ProductState = {
+  errors?: {
+    categoryId?: string[];
+    ref?: string[];
+    description?: string[];
   };
   message?: string | null;
 };
@@ -114,6 +133,44 @@ export async function deleteCategory(id: number) {
       message: 'Database Error: Failed to Delete Category.',
     };
   }
+  revalidatePath('/admin');
+  redirect('/admin');
+}
+
+export async function createProduct(
+  prevState: ProductState,
+  formData: FormData
+) {
+  // Validate form fields using Zod
+  const validatedFields = CreateProductFormSchema.safeParse({
+    ref: formData.get('ref'),
+    description: formData.get('description'),
+    categoryId: formData.get('category_id'),
+  });
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Product.',
+    };
+  }
+  // Prepare data for insertion into the database
+  const { ref, description, categoryId } = validatedFields.data;
+  // Insert data into the database
+  try {
+    await sql`
+      INSERT INTO products (category_id, ref, description)
+      VALUES (${categoryId}, ${ref}, ${description})
+    `;
+  } catch (error) {
+    console.error('Database Error:', error);
+    // If a database error occurs, return a more specific error.
+    return {
+      message: 'Database Error: Failed to Create Product.',
+    };
+  }
+
+  // Revalidate the cache for the invoices page and redirect the user.
   revalidatePath('/admin');
   redirect('/admin');
 }
