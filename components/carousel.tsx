@@ -20,24 +20,14 @@ export default function Carousel({ photos }: CarouselProps) {
       infiniteLoop={true}
       renderArrowNext={(onClickHandler, hasNext, label) =>
         hasNext && (
-          <button
-            className={styles.NextArrow}
-            title={label}
-            type="button"
-            onClick={onClickHandler}
-          >
+          <button className={styles.NextArrow} title={label} type="button" onClick={onClickHandler}>
             <img alt="Next" src="/right-arrow.svg" />
           </button>
         )
       }
       renderArrowPrev={(onClickHandler, hasPrev, label) =>
         hasPrev && (
-          <button
-            className={styles.PrevArrow}
-            title={label}
-            type="button"
-            onClick={onClickHandler}
-          >
+          <button className={styles.PrevArrow} title={label} type="button" onClick={onClickHandler}>
             <img alt="Previous" src="/left-arrow.svg" />
           </button>
         )

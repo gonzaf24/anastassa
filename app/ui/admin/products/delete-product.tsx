@@ -1,39 +1,44 @@
-import { deleteCategory } from '@/app/lib/actions';
-import { CategoryProps } from '@/app/lib/definitions';
+import { deleteProduct } from '@/app/lib/actions';
+import { ProductProps } from '@/app/lib/definitions';
 import { useCallback } from 'react';
 import { AlertDialog } from '../../alert-dialog';
 
-export default function DeleteCategory({
+export default function DeleteProduct({
   isAlertOpen,
-  category,
+  product,
   setIsAlertDialogOpen,
 }: {
   isAlertOpen: boolean;
-  category: CategoryProps | null;
+  product: ProductProps | null;
   // eslint-disable-next-line no-unused-vars
   setIsAlertDialogOpen: (isOpen: boolean) => void;
 }) {
-  const handeleDeleteCategory = useCallback(async () => {
-    if (category) {
-      await deleteCategory(category?.id);
+  const handeleDeleteProduct = useCallback(async () => {
+    if (product) {
+      for (const photo of product.photos || []) {
+        await fetch(`/api/photos?fileUrl=${photo}`, {
+          method: 'DELETE',
+        });
+      }
+      await deleteProduct(parseInt(product?.id));
     }
     setIsAlertDialogOpen(false);
-  }, [category]);
+  }, [product]);
 
   return (
     <AlertDialog
       isOpen={isAlertOpen}
       onOpenChange={setIsAlertDialogOpen}
-      onConfirmDialog={handeleDeleteCategory}
-      title={`Estas seguro de eliminar la categoría ${category?.name}?`}
+      onConfirmDialog={handeleDeleteProduct}
+      title={`¿ Confirmas la eliminacion de este producto ?`}
     >
-      <span>
+      {/* <span>
         {`También se eliminarán todos los `}
         <strong>PRODUCTOS</strong>
         {` de la categoría `}
         <strong>{category?.name}</strong>
         {`. Esta acción no se podrá deshacer una vez confirmda.`}
-      </span>
+      </span> */}
     </AlertDialog>
   );
 }

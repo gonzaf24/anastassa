@@ -2,13 +2,7 @@
 'use client';
 
 import { FileUploadProps } from '@/app/lib/definitions';
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  useDisclosure,
-} from '@nextui-org/react';
+import { Button, Modal, ModalBody, ModalContent, useDisclosure } from '@nextui-org/react';
 import React from 'react';
 
 export const FileUpload: React.FC<FileUploadProps> = ({ file, setFile }) => {
@@ -102,36 +96,18 @@ export const FileUpload: React.FC<FileUploadProps> = ({ file, setFile }) => {
               data={file}
               type="image/png" // Actualiza esto según el tipo de archivo
             />
-            <Button
-              color="primary"
-              onClick={() => setFile(undefined)}
-              className="absolute bottom-1 left-1 rounded-md"
-            >
+            <Button color="primary" onClick={() => setFile('')} className="absolute bottom-1 left-1 rounded-md">
               <p>Eliminar</p>
-              <img
-                src="/events/delete_image.svg"
-                alt="delete"
-                className="h-5 w-5"
-              />
+              <img src="/events/delete_image.svg" alt="delete" className="h-5 w-5" />
             </Button>
             <Button
               className={`absolute top-1 right-1 m-0 h-min w-0 min-w-max rounded-none bg-transparent p-2 group-hover:bg-slate-50 group-hover:bg-opacity-65`}
               onClick={onOpen}
             >
-              <img
-                src="/events/expand.svg"
-                alt="fullscreen"
-                className="h-5 w-5"
-              />
+              <img src="/events/expand.svg" alt="fullscreen" className="h-5 w-5" />
             </Button>
           </div>
-          <Modal
-            isOpen={isOpen}
-            onOpenChange={onOpenChange}
-            placement="center"
-            backdrop="blur"
-            hideCloseButton
-          >
+          <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center" backdrop="blur" hideCloseButton>
             <ModalContent className="rounded-lg border-2 border-gray-700 p-8">
               {(onClose) => (
                 <ModalBody className="px-2 py-2">

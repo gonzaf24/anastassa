@@ -4,28 +4,16 @@ import { CategoryProps } from '@/app/lib/definitions';
 import Modal from '@/app/ui/admin/modal';
 import styles from '@/app/ui/admin/table.module.css';
 import { Button } from '@nextui-org/react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
-} from '@nextui-org/table';
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/table';
 import { useState } from 'react';
 import NewCategoryForm from './create-category-form';
 import EditCategoryForm from './update-category-form';
 
 import DeleteCategory from './delete-category';
-export default function Categories({
-  categories,
-}: {
-  categories: CategoryProps[];
-}) {
+export default function Categories({ categories }: { categories: CategoryProps[] }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] =
-    useState<CategoryProps | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryProps | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,15 +36,8 @@ export default function Categories({
       <Modal buttonTitle="Nueva Categoría" modalTitle="Nueva Categoría">
         <NewCategoryForm />
       </Modal>
-      <Modal
-        isOpen={isEditModalOpen}
-        onOpenChange={setIsEditModalOpen}
-        modalTitle="Editar Categoría"
-      >
-        <EditCategoryForm
-          category={selectedCategory}
-          onClose={handleCloseModal}
-        />
+      <Modal isOpen={isEditModalOpen} onOpenChange={setIsEditModalOpen} modalTitle="Editar Categoría">
+        <EditCategoryForm category={selectedCategory} onClose={handleCloseModal} />
       </Modal>
       <DeleteCategory
         isAlertOpen={isAlertDialogOpen}
@@ -79,32 +60,30 @@ export default function Categories({
         }}
       >
         <TableHeader className="bg-black">
+          <TableColumn width={40} className="text-start">
+            #
+          </TableColumn>
+          <TableColumn width={50}>Id</TableColumn>
           <TableColumn>Nombre cat.</TableColumn>
           <TableColumn>Posición</TableColumn>
-          <TableColumn>Id</TableColumn>
           <TableColumn width={20}>Editar</TableColumn>
           <TableColumn width={20}>Eliminar</TableColumn>
         </TableHeader>
         <TableBody>
           {categories &&
-            categories.map((category) => (
+            categories.map((category, index) => (
               <TableRow key={category.id}>
+                <TableCell className="text-start">{index + 1}</TableCell>
+                <TableCell>{category.id}</TableCell>
                 <TableCell>{category.name}</TableCell>
                 <TableCell>{category.position}</TableCell>
-                <TableCell>{category.id}</TableCell>
                 <TableCell className="text-center">
-                  <Button
-                    className="bg-transparent p-1 min-w-min"
-                    onPress={() => handleEditCategory(category)}
-                  >
+                  <Button className="bg-transparent p-1 min-w-min" onPress={() => handleEditCategory(category)}>
                     <img alt="edit" className="w-6" src="/edit.svg" />
                   </Button>
                 </TableCell>
                 <TableCell className="text-center">
-                  <Button
-                    className="bg-transparent p-1 min-w-min"
-                    onPress={() => handleDeleteCategory(category)}
-                  >
+                  <Button className="bg-transparent p-1 min-w-min" onPress={() => handleDeleteCategory(category)}>
                     <img alt="delete" className="w-7" src="/delete.svg" />
                   </Button>
                 </TableCell>

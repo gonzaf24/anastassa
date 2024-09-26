@@ -1,11 +1,4 @@
-import {
-  Button,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  Modal as ModalUI,
-  useDisclosure,
-} from '@nextui-org/react';
+import { Button, ModalBody, ModalContent, ModalHeader, Modal as ModalUI, useDisclosure } from '@nextui-org/react';
 import React, { ReactNode } from 'react';
 
 interface ModalProps {
@@ -24,11 +17,7 @@ export default function Modal({
   isOpen: controlledIsOpen,
   onOpenChange: controlledOnOpenChange,
 }: ModalProps) {
-  const {
-    isOpen: internalIsOpen,
-    onOpen,
-    onOpenChange: internalOnOpenChange,
-  } = useDisclosure();
+  const { isOpen: internalIsOpen, onOpen, onOpenChange: internalOnOpenChange } = useDisclosure();
 
   // Prefer controlled state when available
   const isOpen = controlledIsOpen ?? internalIsOpen;
@@ -37,11 +26,7 @@ export default function Modal({
   return (
     <>
       {buttonTitle && !controlledIsOpen && (
-        <Button
-          color="primary"
-          className="font-bold rounded-none"
-          onPress={onOpen}
-        >
+        <Button color="primary" className="font-bold rounded-none" onPress={onOpen}>
           <img alt="add" className="w-4" src="/plus.svg" />
           {buttonTitle}
         </Button>
@@ -53,18 +38,20 @@ export default function Modal({
         isDismissable={false}
         hideCloseButton
         backdrop="blur"
+        size="xl"
+        scrollBehavior="inside"
       >
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex justify-between items-center">
                 <p>{modalTitle}</p>
-                <Button
+                {/* <Button
                   className="bg-transparent p-1 h-min min-w-min rounded-full"
                   onClick={onClose}
                 >
                   <img alt="close" className="w-8" src="/close.svg" />
-                </Button>
+                </Button> */}
               </ModalHeader>
               <ModalBody>
                 {React.cloneElement(children as React.ReactElement, {

@@ -22,6 +22,9 @@ export default [
         Request: true,
         File: true,
         HTMLInputElement: true,
+        document: true,
+        FileList: true,
+        fetch: true,
       },
       parser: parser,
       parserOptions: {
@@ -38,26 +41,16 @@ export default [
       import: importPlugin,
       prettier: prettier,
     },
+    extends: ['plugin:prettier/recommended'],
     rules: {
-      'prettier/prettier': 'error',
-      /* 'import/order': [ */
-      /* 'error', */
-      /* {
-          groups: ['builtin', 'external', 'internal'],
-          pathGroups: [
-            {
-              pattern: 'react',
-              group: 'external',
-              position: 'before',
-            },
-          ],
-          pathGroupsExcludedImportTypes: [],
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
-          },
-        }, */
-      /* ], */
+      'prettier/prettier': [
+        'error',
+        {
+          printWidth: 120, // Usa el mismo valor que tienes en Prettier
+          tabWidth: 4,
+          endOfLine: 'auto',
+        },
+      ],
     },
   },
 ];

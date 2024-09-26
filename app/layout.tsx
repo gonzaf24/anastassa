@@ -31,23 +31,9 @@ export default async function RootLayout({ children }: LayoutProps) {
   return (
     <html suppressHydrationWarning lang="en">
       <head>
-        <link
-          href="/apple-touch-icon.png"
-          rel="apple-touch-icon"
-          sizes="180x180"
-        />
-        <link
-          href="/favicon-32x32.png"
-          rel="icon"
-          sizes="32x32"
-          type="image/png"
-        />
-        <link
-          href="/favicon-16x16.png"
-          rel="icon"
-          sizes="16x16"
-          type="image/png"
-        />
+        <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
+        <link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
+        <link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
         <link href="/site.webmanifest" rel="manifest" />
         <link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon" />
         <meta content="#da532c" name="msapplication-TileColor" />
@@ -73,11 +59,7 @@ export default async function RootLayout({ children }: LayoutProps) {
                   target="_blank"
                   title="Instagram"
                 >
-                  <img
-                    alt="Anastassa instagram"
-                    className="w-4 h-4"
-                    src="/instagram.svg"
-                  />
+                  <img alt="Anastassa instagram" className="w-4 h-4" src="/instagram.svg" />
                   anastassa__
                 </Link>
                 <span className="text-[#ef8482]">|</span>

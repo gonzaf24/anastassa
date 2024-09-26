@@ -1,13 +1,7 @@
 'use client';
 import { Menu as AdminMenu } from '@/app/ui/admin/menu';
 import { Menu as UserMenu } from '@/app/ui/menu';
-import {
-  NavbarBrand,
-  NavbarContent,
-  NavbarMenu,
-  NavbarMenuToggle,
-  Navbar as NavbarUI,
-} from '@nextui-org/navbar';
+import { NavbarBrand, NavbarContent, NavbarMenu, NavbarMenuToggle, Navbar as NavbarUI } from '@nextui-org/navbar';
 import NextLink from 'next/link';
 import { useState } from 'react';
 
@@ -49,19 +43,12 @@ export const Navbar = ({ session }: { session: any }) => {
       >
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-center items-center gap-1" href="/">
-            <img
-              alt="Anastassa logo"
-              className="h-24"
-              src="/anastassa-logo.png"
-            />
+            <img alt="Anastassa logo" className="h-24" src="/anastassa-logo.png" />
           </NextLink>
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent
-        className="basis-full max-w-min min-w-[50px] sm:hidden"
-        justify="end"
-      />
+      <NavbarContent className="basis-full max-w-min min-w-[50px] sm:hidden" justify="end" />
 
       <NavbarMenu className="px-0">
         <div className="flex flex-col gap-2 bg-[#ef8482] h-full">

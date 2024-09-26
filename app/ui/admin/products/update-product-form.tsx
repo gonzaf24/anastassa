@@ -1,26 +1,41 @@
+/* eslint-disable no-unused-vars */
 'use client';
-import { createProduct } from '@/app/lib/actions';
-import { CategoryProps } from '@/app/lib/definitions';
-import { deletePhoto, uploadPhoto } from '@/app/services/photo-service';
+import { updateProduct } from '@/app/lib/actions';
+import { CategoryProps, ProductProps } from '@/app/lib/definitions';
+import { deletePhoto, uploadPhoto } from '@/app/services/photo-service'; // Importar los métodos desde el servicio
 import { Button, Input, Select, SelectItem } from '@nextui-org/react';
-import React, { startTransition, useActionState, useState } from 'react';
-import { MultiFileUpload } from '../../multi-file-upload';
+import React, { startTransition, useActionState, useEffect, useState } from 'react';
+import { UpdateMultiFileUpload } from '../../update-multi-file-upload';
 
-export default function CreateProductForm({
+export default function UpdateProductForm({
   categories,
+  product,
   onClose,
+  onCloseAndDelete,
 }: {
   categories: CategoryProps[];
-  onClose?: () => void;
+  product: ProductProps | null; // El producto a editar
+  onClose: () => void;
+  onCloseAndDelete: (uploadedFiles: string[]) => void;
 }) {
   const initialState = { message: '', errors: {} };
   const [descriptionError, setDescriptionError] = useState(false);
   const [refNumberError, setRefNumberError] = useState(false);
   const [categoryError, setCategoryError] = useState(false);
-  const [fileError, setFileError] = useState(false);
-  const [state, dispatch] = useActionState(createProduct, initialState);
-  const [files, setFiles] = useState<string[]>([]);
+  //const [fileError, setFileError] = useState(false);
+  const [state, dispatch] = useActionState(updateProduct, initialState);
+
+  const [files, setFiles] = useState<string[]>(product?.photos || []); // Fotos actuales del producto
+  //const [filesSrc, setFilesSrc] = useState<string[]>(product?.photos || []); // Fotos actuales del producto
   const [photosError, setPhotosError] = useState<string>();
+  const [uploadedUrls, setUploadedUrls] = useState([] as string[]);
+
+  useEffect(() => {
+    // Prepopulate the form if editing an existing product
+    if (product) {
+      setFiles(product.photos || []);
+    }
+  }, [product]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,8 +47,6 @@ export default function CreateProductForm({
 
     // Convertir el nombre a mayúsculas
     description = description.trim().toUpperCase();
-
-    // Actualiza el FormData con el nombre en mayúsculas
     formData.set('description', description);
 
     if (!categoryId.trim()) {
@@ -42,7 +55,6 @@ export default function CreateProductForm({
       setCategoryError(false);
     }
 
-    // Basic validation
     if (!description.trim()) {
       setDescriptionError(true);
     } else {
@@ -55,90 +67,79 @@ export default function CreateProductForm({
       setRefNumberError(false);
     }
 
-    if (files.length === 0) {
-      setFileError(true);
-    } else {
-      setFileError(false);
+    if (!categoryId.trim() || !description.trim() || !ref.trim()) {
+      return;
     }
 
-    if (!description.trim() || !ref.trim()) {
-      return; // Stop form submission if there's an error
-    }
-
-    if (!categoryId.trim() || !description.trim() || !ref.trim() || files.length === 0) {
-      return; // Stop form submission if there's an error
-    }
-
-    // Upload photos
-    const uploadedPhotos = await uploadPhotos();
-
-    for (const photo of uploadedPhotos) {
+    for (const photo of files) {
       formData.append('photos', photo);
     }
+    formData.append('product_id', product?.id.toString() || '');
 
     startTransition(() => {
-      dispatch(formData);
+      dispatch(formData); // Enviar el id del producto para editar
     });
-    //Aqui implementar la creacion de la categoria con los datos del formulario.
+
     if (onClose) onClose();
   };
 
   async function uploadPhotos(): Promise<string[]> {
     setPhotosError('');
-    const form = document.getElementById('create-product-form') as HTMLFormElement | null;
+    const form = document.getElementById('update-product-form') as HTMLFormElement | null;
 
     if (!form) return [];
 
     const formData = new FormData(form);
     const imagesFiles = Array.from(formData?.getAll('images') as FileList | []);
-
     let hasErrors = false;
-    const uploadedUrls: string[] = []; // Array interno para acumular las URLs
+    const uploadedUrlsLocal: string[] = [];
 
     if (imagesFiles.length > 0 && imagesFiles[0].name !== '') {
       for (const imageFile of imagesFiles) {
         if (hasErrors) break;
 
         try {
-          // Utiliza el servicio de subida de fotos
-          const fileUrl = await uploadPhoto(imageFile, 'prendas'); // llama a la función del servicio
+          // Usamos el servicio `uploadPhoto` en vez del `fetch` directamente
+          const fileUrl = await uploadPhoto(imageFile, 'prendas');
 
-          uploadedUrls.push(fileUrl); // Agregar la URL al array interno
-        } catch (error) {
-          hasErrors = true;
-          console.error('Error uploading photos:', error);
-          setPhotosError('Error uploading photos');
+          if (!fileUrl) {
+            // Verificamos si no devuelve una URL válida
+            hasErrors = true;
+            setPhotosError('Error uploading the image');
 
-          // Si hay un error, elimina las fotos ya subidas
-          for (const photoUrl of uploadedUrls) {
-            try {
-              await deletePhoto(photoUrl); // Elimina las fotos con el servicio
-            } catch (deleteError) {
-              console.error('Error deleting photo:', deleteError);
+            // Eliminar las fotos subidas si ocurre un error
+            for (const photo of uploadedUrlsLocal) {
+              await deletePhoto(photo); // Usar el método `deletePhoto` del servicio
             }
-          }
 
+            return []; // Devolver un array vacío en caso de error
+          } else {
+            uploadedUrlsLocal.push(fileUrl); // Aquí `fileUrl` es la URL de la imagen
+            setUploadedUrls(uploadedUrlsLocal); // Mantener el manejo del estado de las URLs
+          }
+        } catch (error) {
+          setPhotosError('Error on upload photos');
           return []; // Devolver un array vacío si hay un error en la subida
         }
       }
     }
-
-    return uploadedUrls; // Devolver las URLs de las imágenes subidas
+    setFiles([...files, ...uploadedUrlsLocal]); // Mantener el manejo del estado de archivos
+    return uploadedUrlsLocal; // Devolver las URLs de las imágenes subidas
   }
 
-  /* async function uploadPhotos(): Promise<string[]> {
+  /*   async function uploadPhotos(): Promise<string[]> {
     setPhotosError('');
     const form = document.getElementById(
-      'create-product-form'
+      'update-product-form'
     ) as HTMLFormElement | null;
-
     if (!form) return [];
 
     const formData = new FormData(form);
     const imagesFiles = Array.from(formData?.getAll('images') as FileList | []);
-    console.log('imagesFiles', imagesFiles);
+    console.log('update imagesFiles', imagesFiles);
     let hasErrors = false;
-    const uploadedUrls: string[] = []; // Array interno para acumular las URLs
+
+    const uploadedUrlsLocal: string[] = [];
 
     if (imagesFiles.length > 0 && imagesFiles[0].name !== '') {
       for (const imageFile of imagesFiles) {
@@ -159,55 +160,52 @@ export default function CreateProductForm({
             hasErrors = true;
             setPhotosError(fileUrl.message);
 
-            // Eliminar las fotos ya subidas si hay un error
             for (const photo of uploadedUrls) {
               await fetch(`/api/photos?fileUrl=${photo}`, {
                 method: 'DELETE',
               });
             }
-
-            return []; // Devolver un array vacío en caso de error
+            return [];
           } else {
-            uploadedUrls.push(fileUrl.blob.url); // Agregar la URL al array interno
+            uploadedUrlsLocal.push(fileUrl.blob.url);
+            setUploadedUrls(uploadedUrlsLocal);
+            setFiles([...files, fileUrl.blob.url]);
           }
         } catch (error) {
           setPhotosError('Error on upload photos');
           console.log('Error on upload photos: ', error);
-          return []; // Devolver un array vacío si hay un error en la subida
+          return [];
         }
       }
     }
 
-    return uploadedUrls; // Devolver las URLs de las imágenes subidas
+    return uploadedUrls;
   } */
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3" id="create-product-form">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3" id="update-product-form">
       <Select
         name="category_id"
         label="Categoría"
+        defaultSelectedKeys={[product?.categoryId?.toString() || '']}
         isInvalid={categoryError}
         errorMessage={categoryError ? 'La categoría es obligatoria.' : undefined}
       >
         {categories.map((category) => (
-          <SelectItem key={category.id}>{category.name}</SelectItem>
+          <SelectItem key={category.id} value={category.id.toString()}>
+            {category.name}
+          </SelectItem>
         ))}
       </Select>
-      <div id="date_end-error" aria-live="polite" aria-atomic="true">
-        {state.errors?.categoryId &&
-          state.errors.categoryId.map((error: string) => (
-            <p className="mt-2 text-sm text-red-500" key={error}>
-              {error}
-            </p>
-          ))}
-      </div>
+
       <Input
         type="number"
         label="Ref."
         name="ref"
+        defaultValue={product?.ref.toString()}
         isRequired
         isInvalid={refNumberError}
-        errorMessage={refNumberError ? 'La posición es obligatoria.' : undefined}
+        errorMessage={refNumberError ? 'La referencia es obligatoria.' : undefined}
       />
       <div id="date_end-error" aria-live="polite" aria-atomic="true">
         {state.errors?.ref &&
@@ -217,37 +215,28 @@ export default function CreateProductForm({
             </p>
           ))}
       </div>
+
       <Input
         type="text"
         label="Descripción"
         name="description"
+        defaultValue={product?.description}
         isRequired
         isInvalid={descriptionError}
-        errorMessage={descriptionError ? 'La descripcion es obligatoria.' : undefined}
+        errorMessage={descriptionError ? 'La descripción es obligatoria.' : undefined}
         style={{ textTransform: 'uppercase' }}
       />
-      <div id="date_end-error" aria-live="polite" aria-atomic="true">
-        {state.errors?.description &&
-          state.errors.description.map((error: string) => (
-            <p className="mt-2 text-sm text-red-500" key={error}>
-              {error}
-            </p>
-          ))}
-      </div>
-      <MultiFileUpload files={files} setFiles={setFiles} />
-      <div id="date_end-error" aria-live="polite" aria-atomic="true">
-        {fileError && <p className="mt-2 text-sm text-red-500">Al menos una foto es obligatoria.</p>}
-      </div>
+
+      <UpdateMultiFileUpload files={files} setFiles={setFiles} uploadFiles={uploadPhotos} />
+
       {photosError && <p className="mt-2 text-sm text-red-500">{photosError}</p>}
-      <div id="date_start-error" aria-live="polite" aria-atomic="true">
-        {state.message && <p className="mt-2 text-sm text-red-500">{state.message}</p>}
-      </div>
+
       <div className="flex gap-3 w-full mt-4 mb-4">
-        <Button onClick={onClose} className="w-full">
+        <Button onClick={() => onCloseAndDelete(uploadedUrls)} className="w-full">
           Cancelar
         </Button>
         <Button color="primary" type="submit" className="w-full">
-          Crear
+          Guardar Cambios
         </Button>
       </div>
     </form>

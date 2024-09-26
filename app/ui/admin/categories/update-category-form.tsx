@@ -88,9 +88,7 @@ export default function UpdateCategoryForm({
           ))}
       </div>
       <div id="date_start-error" aria-live="polite" aria-atomic="true">
-        {state.message && (
-          <p className="mt-2 text-sm text-red-500">{state.message}</p>
-        )}
+        {state.message && <p className="mt-2 text-sm text-red-500">{state.message}</p>}
       </div>
       <div className="flex gap-3 w-full mt-4 mb-4">
         <Button onClick={onClose} className="w-full">

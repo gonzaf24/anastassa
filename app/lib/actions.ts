@@ -32,6 +32,14 @@ const CreateProductFormSchema = z.object({
   description: z.string().nonempty({ message: 'Description is required' }),
 });
 
+// Validación del formulario de actualización de producto
+const UpdateProductFormSchema = z.object({
+  productId: z.string().nonempty({ message: 'Product ID is required' }),
+  categoryId: z.string().nonempty({ message: 'Please select a category.' }),
+  ref: z.string().nonempty({ message: 'Please enter a reference.' }),
+  description: z.string().nonempty({ message: 'Description is required' }),
+});
+
 export type CategoryState = {
   errors?: {
     name?: string[];
@@ -49,10 +57,7 @@ export type ProductState = {
   message?: string | null;
 };
 
-export async function createCategory(
-  prevState: CategoryState,
-  formData: FormData
-) {
+export async function createCategory(prevState: CategoryState, formData: FormData) {
   // Validate form fields using Zod
   const validatedFields = CreateCategoryFormSchema.safeParse({
     name: formData.get('name'),
@@ -86,10 +91,7 @@ export async function createCategory(
   redirect('/admin');
 }
 
-export async function updateCategory(
-  prevState: CategoryState,
-  formData: FormData
-) {
+export async function updateCategory(prevState: CategoryState, formData: FormData) {
   // Validate form fields using Zod
   const validatedFields = UpdateCategorySchema.safeParse({
     name: formData.get('name'),
@@ -137,10 +139,7 @@ export async function deleteCategory(id: number) {
   redirect('/admin');
 }
 
-export async function createProduct(
-  prevState: ProductState,
-  formData: FormData
-) {
+export async function createProduct(prevState: ProductState, formData: FormData) {
   // Validate form fields using Zod
   const validatedFields = CreateProductFormSchema.safeParse({
     ref: formData.get('ref'),
@@ -154,13 +153,28 @@ export async function createProduct(
       message: 'Missing Fields. Failed to Create Product.',
     };
   }
+
+  const productData = {
+    photos: formData.getAll('photos') || '',
+  };
   // Prepare data for insertion into the database
   const { ref, description, categoryId } = validatedFields.data;
+
+  const { photos } = productData;
   // Insert data into the database
   try {
     await sql`
-      INSERT INTO products (category_id, ref, description)
-      VALUES (${categoryId}, ${ref}, ${description})
+      INSERT INTO products (
+        category_id, 
+        ref, 
+        description, 
+        photos
+      ) VALUES (
+        ${categoryId},
+        ${ref}, 
+        ${description},
+        ARRAY[${photos.map((url) => `${url}`).join(',')}]::text[]
+      )
     `;
   } catch (error) {
     console.error('Database Error:', error);
@@ -175,10 +189,55 @@ export async function createProduct(
   redirect('/admin');
 }
 
-export async function authenticate(
-  prevState: string | undefined,
-  formData: FormData
-) {
+export async function updateProduct(prevState: ProductState, formData: FormData) {
+  // Validar campos usando Zod
+  const validatedFields = UpdateProductFormSchema.safeParse({
+    productId: formData.get('product_id') as string, // Asegúrate de que es string
+    categoryId: formData.get('category_id') as string, // Convertir a string
+    ref: formData.get('ref') as string, // Convertir a string
+    description: formData.get('description') as string, // Convertir a string
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Update Product.',
+    };
+  }
+
+  const productData = {
+    photos: formData.getAll('photos') as string[], // Convertir a array de strings
+  };
+
+  const { productId, categoryId, ref, description } = validatedFields.data;
+  const { photos } = productData;
+
+  try {
+    // Actualizar el producto
+    await sql`
+      UPDATE products
+      SET category_id = ${categoryId}, 
+          ref = ${ref}, 
+          description = ${description},
+          photos = CASE
+            WHEN ${photos.length} = 0 THEN NULL
+            ELSE ARRAY[${photos.map((url) => `${url}`).join(',')}]::text[]
+          END
+      WHERE id = ${productId}
+    `;
+  } catch (error) {
+    console.error('Database Error:', error);
+    return {
+      message: 'Database Error: Failed to Update Product.',
+    };
+  }
+
+  // Revalidar la caché y redirigir
+  revalidatePath('/admin');
+  redirect('/admin');
+}
+
+export async function authenticate(prevState: string | undefined, formData: FormData) {
   try {
     await signIn('credentials', formData);
   } catch (error) {
@@ -192,4 +251,17 @@ export async function authenticate(
     }
     throw error;
   }
+}
+
+export async function deleteProduct(productId: number) {
+  try {
+    await sql`DELETE FROM products WHERE id = ${productId}`;
+  } catch (error) {
+    console.error('Database Error:', error);
+    return {
+      message: 'Database Error: Failed to Delete Product.',
+    };
+  }
+  revalidatePath('/admin');
+  redirect('/admin');
 }

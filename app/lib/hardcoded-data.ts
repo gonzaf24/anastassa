@@ -54,13 +54,7 @@ export const CategoriesData = [
 export const ProductsData = [
   {
     id: 1000,
-    photos: [
-      '/productos/1.jpg',
-      '/productos/2.jpg',
-      '/productos/3.jpg',
-      '/productos/4.jpg',
-      '/productos/5.jpg',
-    ],
+    photos: ['/productos/1.jpg', '/productos/2.jpg', '/productos/3.jpg', '/productos/4.jpg', '/productos/5.jpg'],
     ref: 107,
     categoryId: 100,
     description: 'PONCHOS LIVIANOS',

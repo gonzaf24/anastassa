@@ -1,10 +1,4 @@
-export default function ProductCard({
-  product,
-  onProductSelect,
-}: {
-  product: any;
-  onProductSelect: any;
-}) {
+export default function ProductCard({ product, onProductSelect }: { product: any; onProductSelect: any }) {
   return (
     <div
       className="m-auto flex flex-col p-0 h-auto gap-0 bg-transparent w-[150px] sm:w-[225px] sm:hover:scale-105 sm:transition-all"
@@ -19,9 +13,7 @@ export default function ProductCard({
         src={product.photos[0]}
       />
       <div className="flex flex-col gap-2 border-2 p-2 border-t-0">
-        <p className="uppercase font-bold text-tiny text-[#ef8482]">
-          REF: {product.ref}
-        </p>
+        <p className="uppercase font-bold text-tiny text-[#ef8482]">REF: {product.ref}</p>
         <p className="text-tiny font-bold w-full text-left uppercase text-ellipsis whitespace-nowrap	overflow-hidden">
           {product.title}
         </p>

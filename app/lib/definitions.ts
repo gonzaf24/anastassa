@@ -16,8 +16,29 @@ export type CategoryProps = {
   position: number;
 };
 
-export interface FileUploadProps {
-  file: string | undefined;
-  setFile: (file: string | undefined) => void;
+export type FileUploadProps = {
+  file: string;
+  setFile: (file: string) => void;
+};
+
+export interface MultiFileUploadProps {
+  files: string[];
+  setFiles: (files: string[]) => void;
   top?: boolean;
 }
+
+export interface UpdateFileUploadProps {
+  files: string[];
+  setFiles: (files: string[]) => void;
+  uploadFiles: () => void;
+  top?: boolean;
+}
+
+export type ProductProps = {
+  id: string;
+  categoryId: number;
+  categoryName: string;
+  ref: number;
+  photos: string[];
+  description: string;
+};

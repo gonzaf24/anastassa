@@ -28,6 +28,7 @@
     "next-themes": "^0.2.1",
     "postcss": "8.4.38",
     "react": "19.0.0-rc-f38c22b244-20240704",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "19.0.0-rc-f38c22b244-20240704",
     "react-responsive-carousel": "^3.2.23",
     "tailwind-merge": "^2.5.2",

@@ -5,15 +5,7 @@ import Carousel from '@/components/carousel';
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { ProductsProps } from './product-list';
 
-export function ProductDrawer({
-  product,
-  open,
-  setOpen,
-}: {
-  product: ProductsProps;
-  open: any;
-  setOpen: any;
-}) {
+export function ProductDrawer({ product, open, setOpen }: { product: ProductsProps; open: any; setOpen: any }) {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerContent>
@@ -26,9 +18,7 @@ export function ProductDrawer({
           </Button>
           <Carousel photos={product.photos} />
           <div className="flex flex-col gap-2 p-2">
-            <p className="uppercase font-bold text-tiny text-[#ef8482]">
-              REF: {product.ref}
-            </p>
+            <p className="uppercase font-bold text-tiny text-[#ef8482]">REF: {product.ref}</p>
             <p className="text-tiny font-bold w-full text-left uppercase text-ellipsis whitespace-nowrap	overflow-hidden">
               {product.description}
             </p>

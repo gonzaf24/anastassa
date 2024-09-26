@@ -12,11 +12,7 @@ export type ProductsProps = {
   description: string;
 };
 
-export default function ProductList({
-  products,
-}: {
-  products: ProductsProps[];
-}) {
+export default function ProductList({ products }: { products: ProductsProps[] }) {
   const [open, setOpen] = useState(false);
   const [product, setProduct] = useState<ProductsProps | undefined>(undefined);
 
@@ -28,15 +24,9 @@ export default function ProductList({
   return (
     <div className="flex flex-wrap gap-4 sm:gap-10">
       {products.map((product) => (
-        <ProductCard
-          key={product.ref}
-          product={product}
-          onProductSelect={onProductClick}
-        />
+        <ProductCard key={product.ref} product={product} onProductSelect={onProductClick} />
       ))}
-      {product && (
-        <ProductDrawer open={open} product={product} setOpen={setOpen} />
-      )}
+      {product && <ProductDrawer open={open} product={product} setOpen={setOpen} />}
     </div>
   );
 }

@@ -33,9 +33,7 @@ export const AlertDialog = ({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirmDialog}>
-            Continue
-          </AlertDialogAction>
+          <AlertDialogAction onClick={onConfirmDialog}>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialogUI>

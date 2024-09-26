@@ -3,11 +3,7 @@ import { createCategory } from '@/app/lib/actions';
 import { Button, Input } from '@nextui-org/react';
 import React, { startTransition, useActionState, useState } from 'react';
 
-export default function CreateCategoryForm({
-  onClose,
-}: {
-  onClose?: () => void;
-}) {
+export default function CreateCategoryForm({ onClose }: { onClose?: () => void }) {
   const initialState = { message: '', errors: {} };
   const [nameError, setNameError] = useState(false);
   const [positionError, setPositionError] = useState(false);
@@ -88,9 +84,7 @@ export default function CreateCategoryForm({
           ))}
       </div>
       <div id="date_start-error" aria-live="polite" aria-atomic="true">
-        {state.message && (
-          <p className="mt-2 text-sm text-red-500">{state.message}</p>
-        )}
+        {state.message && <p className="mt-2 text-sm text-red-500">{state.message}</p>}
       </div>
       <div className="flex gap-3 w-full mt-4 mb-4">
         <Button onClick={onClose} className="w-full">
