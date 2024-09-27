@@ -31,6 +31,9 @@ export interface UpdateFileUploadProps {
   files: string[];
   setFiles: (files: string[]) => void;
   uploadFiles: () => void;
+  onDeleteFiles: (files: string[]) => void;
+  urlsToDelete: string[];
+  isLoadingFiles: boolean;
   top?: boolean;
 }
 

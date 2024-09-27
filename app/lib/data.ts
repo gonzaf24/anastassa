@@ -30,3 +30,18 @@ export const fetchProductsData = async () => {
     return [];
   }
 };
+
+export const fetchProductsByCategory = async (categoryId: number) => {
+  noStore();
+  try {
+    const data = await sql`SELECT products.*, categories.name
+                            FROM products
+                            JOIN categories ON products.category_id = categories.id
+                            WHERE products.category_id = ${categoryId}`;
+    const products: ProductProps[] = data.rows.map((row: QueryResultRow) => mapProductsDataToProducts(row));
+    return products;
+  } catch (error) {
+    console.error('Database Error:', error);
+    return [];
+  }
+};

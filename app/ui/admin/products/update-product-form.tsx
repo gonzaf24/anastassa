@@ -11,12 +11,10 @@ export default function UpdateProductForm({
   categories,
   product,
   onClose,
-  onCloseAndDelete,
 }: {
   categories: CategoryProps[];
   product: ProductProps | null; // El producto a editar
   onClose: () => void;
-  onCloseAndDelete: (uploadedFiles: string[]) => void;
 }) {
   const initialState = { message: '', errors: {} };
   const [descriptionError, setDescriptionError] = useState(false);
@@ -29,6 +27,11 @@ export default function UpdateProductForm({
   //const [filesSrc, setFilesSrc] = useState<string[]>(product?.photos || []); // Fotos actuales del producto
   const [photosError, setPhotosError] = useState<string>();
   const [uploadedUrls, setUploadedUrls] = useState([] as string[]);
+  const [urlsToDelete, setUrlsToDelete] = useState([] as string[]);
+
+  const [isConfirmLoading, setIsConfirmLoading] = useState(false);
+  const [isCloseLoading, setIsCloseLoading] = useState(false);
+  const [isFilesLoading, setIsFilesLoading] = useState(false);
 
   useEffect(() => {
     // Prepopulate the form if editing an existing product
@@ -39,6 +42,7 @@ export default function UpdateProductForm({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsConfirmLoading(true);
     const form = event.currentTarget;
     const formData = new FormData(form);
     const categoryId = formData.get('category_id') as string;
@@ -76,7 +80,13 @@ export default function UpdateProductForm({
     }
     formData.append('product_id', product?.id.toString() || '');
 
+    //aqui eliminar las fotos que se quitaron del producto
+    for (const photo of urlsToDelete) {
+      await deletePhoto(photo); // Usar el método `deletePhoto` del servicio
+    }
+
     startTransition(() => {
+      setIsConfirmLoading(false);
       dispatch(formData); // Enviar el id del producto para editar
     });
 
@@ -85,6 +95,7 @@ export default function UpdateProductForm({
 
   async function uploadPhotos(): Promise<string[]> {
     setPhotosError('');
+    setIsFilesLoading(true);
     const form = document.getElementById('update-product-form') as HTMLFormElement | null;
 
     if (!form) return [];
@@ -124,63 +135,18 @@ export default function UpdateProductForm({
       }
     }
     setFiles([...files, ...uploadedUrlsLocal]); // Mantener el manejo del estado de archivos
+    setIsFilesLoading(false);
     return uploadedUrlsLocal; // Devolver las URLs de las imágenes subidas
   }
 
-  /*   async function uploadPhotos(): Promise<string[]> {
-    setPhotosError('');
-    const form = document.getElementById(
-      'update-product-form'
-    ) as HTMLFormElement | null;
-    if (!form) return [];
-
-    const formData = new FormData(form);
-    const imagesFiles = Array.from(formData?.getAll('images') as FileList | []);
-    console.log('update imagesFiles', imagesFiles);
-    let hasErrors = false;
-
-    const uploadedUrlsLocal: string[] = [];
-
-    if (imagesFiles.length > 0 && imagesFiles[0].name !== '') {
-      for (const imageFile of imagesFiles) {
-        if (hasErrors) break;
-
-        try {
-          const response = await fetch(
-            `/api/photos?fileName=${imageFile.name}&folderName=prendas`,
-            {
-              method: 'POST',
-              body: imageFile,
-            }
-          );
-
-          const fileUrl = await response.json();
-
-          if (fileUrl.message) {
-            hasErrors = true;
-            setPhotosError(fileUrl.message);
-
-            for (const photo of uploadedUrls) {
-              await fetch(`/api/photos?fileUrl=${photo}`, {
-                method: 'DELETE',
-              });
-            }
-            return [];
-          } else {
-            uploadedUrlsLocal.push(fileUrl.blob.url);
-            setUploadedUrls(uploadedUrlsLocal);
-            setFiles([...files, fileUrl.blob.url]);
-          }
-        } catch (error) {
-          setPhotosError('Error on upload photos');
-          console.log('Error on upload photos: ', error);
-          return [];
-        }
-      }
+  const handleCloseAndDelete = async () => {
+    setIsCloseLoading(true);
+    for (const photo of uploadedUrls) {
+      await deletePhoto(photo); // Usar el método `deletePhoto` del servicio
     }
-
-    return uploadedUrls;
-  } */
+    setIsCloseLoading(false);
+    if (onClose) onClose();
+  };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3" id="update-product-form">
@@ -227,15 +193,33 @@ export default function UpdateProductForm({
         style={{ textTransform: 'uppercase' }}
       />
 
-      <UpdateMultiFileUpload files={files} setFiles={setFiles} uploadFiles={uploadPhotos} />
+      <UpdateMultiFileUpload
+        files={files}
+        setFiles={setFiles}
+        isLoadingFiles={isFilesLoading}
+        uploadFiles={uploadPhotos}
+        urlsToDelete={urlsToDelete}
+        onDeleteFiles={setUrlsToDelete}
+      />
 
       {photosError && <p className="mt-2 text-sm text-red-500">{photosError}</p>}
 
       <div className="flex gap-3 w-full mt-4 mb-4">
-        <Button onClick={() => onCloseAndDelete(uploadedUrls)} className="w-full">
+        <Button
+          onClick={handleCloseAndDelete}
+          className="w-full"
+          isLoading={isCloseLoading}
+          isDisabled={isConfirmLoading}
+        >
           Cancelar
         </Button>
-        <Button color="primary" type="submit" className="w-full">
+        <Button
+          color="primary"
+          type="submit"
+          className="w-full"
+          isLoading={isConfirmLoading}
+          isDisabled={isCloseLoading}
+        >
           Guardar Cambios
         </Button>
       </div>

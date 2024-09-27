@@ -21,18 +21,6 @@ export default function Products({ categories, products }: { categories: Categor
     setIsEditModalOpen(false);
   };
 
-  const handleCloseModalAndDelete = async (uploadedFiles: string[]) => {
-    console.log('Delete files al cancelar :   ', uploadedFiles);
-
-    for (const photo of uploadedFiles) {
-      await fetch(`/api/photos?fileUrl=${photo}`, {
-        method: 'DELETE',
-      });
-    }
-
-    setIsEditModalOpen(false);
-  };
-
   const handleEditProduct = (product: ProductProps) => {
     setSelectedProduct(product);
     setIsEditModalOpen(true);
@@ -48,15 +36,8 @@ export default function Products({ categories, products }: { categories: Categor
       <Modal buttonTitle="Nuevo Producto" modalTitle="Nuevo Producto">
         <CreateProductForm categories={categories} />
       </Modal>
-      {/*       here implement update product form
-       */}
       <Modal isOpen={isEditModalOpen} onOpenChange={setIsEditModalOpen} modalTitle="Editar Producto">
-        <UpdateProductForm
-          categories={categories}
-          product={selectedProduct}
-          onClose={handleCloseModal}
-          onCloseAndDelete={handleCloseModalAndDelete}
-        />
+        <UpdateProductForm categories={categories} product={selectedProduct} onClose={handleCloseModal} />
       </Modal>
       <DeleteProduct
         isAlertOpen={isAlertDialogOpen}

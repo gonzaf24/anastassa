@@ -21,8 +21,10 @@ export default function CreateProductForm({
   const [state, dispatch] = useActionState(createProduct, initialState);
   const [files, setFiles] = useState<string[]>([]);
   const [photosError, setPhotosError] = useState<string>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -77,6 +79,7 @@ export default function CreateProductForm({
     }
 
     startTransition(() => {
+      setIsLoading(false);
       dispatch(formData);
     });
     //Aqui implementar la creacion de la categoria con los datos del formulario.
@@ -125,61 +128,6 @@ export default function CreateProductForm({
 
     return uploadedUrls; // Devolver las URLs de las imágenes subidas
   }
-
-  /* async function uploadPhotos(): Promise<string[]> {
-    setPhotosError('');
-    const form = document.getElementById(
-      'create-product-form'
-    ) as HTMLFormElement | null;
-
-    if (!form) return [];
-
-    const formData = new FormData(form);
-    const imagesFiles = Array.from(formData?.getAll('images') as FileList | []);
-    console.log('imagesFiles', imagesFiles);
-    let hasErrors = false;
-    const uploadedUrls: string[] = []; // Array interno para acumular las URLs
-
-    if (imagesFiles.length > 0 && imagesFiles[0].name !== '') {
-      for (const imageFile of imagesFiles) {
-        if (hasErrors) break;
-
-        try {
-          const response = await fetch(
-            `/api/photos?fileName=${imageFile.name}&folderName=prendas`,
-            {
-              method: 'POST',
-              body: imageFile,
-            }
-          );
-
-          const fileUrl = await response.json();
-
-          if (fileUrl.message) {
-            hasErrors = true;
-            setPhotosError(fileUrl.message);
-
-            // Eliminar las fotos ya subidas si hay un error
-            for (const photo of uploadedUrls) {
-              await fetch(`/api/photos?fileUrl=${photo}`, {
-                method: 'DELETE',
-              });
-            }
-
-            return []; // Devolver un array vacío en caso de error
-          } else {
-            uploadedUrls.push(fileUrl.blob.url); // Agregar la URL al array interno
-          }
-        } catch (error) {
-          setPhotosError('Error on upload photos');
-          console.log('Error on upload photos: ', error);
-          return []; // Devolver un array vacío si hay un error en la subida
-        }
-      }
-    }
-
-    return uploadedUrls; // Devolver las URLs de las imágenes subidas
-  } */
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3" id="create-product-form">
@@ -243,10 +191,10 @@ export default function CreateProductForm({
         {state.message && <p className="mt-2 text-sm text-red-500">{state.message}</p>}
       </div>
       <div className="flex gap-3 w-full mt-4 mb-4">
-        <Button onClick={onClose} className="w-full">
+        <Button onClick={onClose} className="w-full" isDisabled={isLoading}>
           Cancelar
         </Button>
-        <Button color="primary" type="submit" className="w-full">
+        <Button color="primary" type="submit" className="w-full" isLoading={isLoading}>
           Crear
         </Button>
       </div>

@@ -4,7 +4,14 @@ import { Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow
 import React from 'react';
 import { UpdateFileUploadProps } from '../lib/definitions';
 
-export const UpdateMultiFileUpload: React.FC<UpdateFileUploadProps> = ({ files, setFiles, uploadFiles }) => {
+export const UpdateMultiFileUpload: React.FC<UpdateFileUploadProps> = ({
+  files,
+  setFiles,
+  uploadFiles,
+  onDeleteFiles,
+  urlsToDelete,
+  isLoadingFiles,
+}) => {
   const [error, setError] = React.useState<string | null>(null);
 
   const isValidFile = (file: File) => {
@@ -29,8 +36,10 @@ export const UpdateMultiFileUpload: React.FC<UpdateFileUploadProps> = ({ files, 
     await uploadFiles();
   };
 
-  const handleRemoveFile = (index: number) => {
+  const handleRemoveFile = (index: number, fileUrl: string) => {
     setFiles(files.filter((_, i) => i !== index));
+    if (fileUrl.startsWith('blob:')) return;
+    onDeleteFiles([...urlsToDelete, fileUrl]);
   };
 
   const moveItem = (index: number, direction: 'up' | 'down') => {
@@ -44,9 +53,10 @@ export const UpdateMultiFileUpload: React.FC<UpdateFileUploadProps> = ({ files, 
 
   return (
     <div className="container flex w-full flex-col items-center justify-center gap-4">
-      <Button className="w-full p-0">
-        <label htmlFor="file" className="relative flex justify-center items-center  gap-2 w-full h-full cursor-pointer">
-          <p>Agregar fotos</p> <img src="/plus.svg" alt="upload" className="w-4" />
+      <Button className="w-full p-0 relative" isLoading={isLoadingFiles}>
+        <label htmlFor="file" className="absolute inset-0 flex justify-center items-center gap-2 cursor-pointer">
+          <p>Agregar fotos</p>
+          <img src="/plus.svg" alt="upload" className="w-4" />
         </label>
         <input
           name="images"
@@ -108,7 +118,7 @@ export const UpdateMultiFileUpload: React.FC<UpdateFileUploadProps> = ({ files, 
               <TableCell className="text-end">
                 <Button
                   color="primary"
-                  onClick={() => handleRemoveFile(index)}
+                  onClick={() => handleRemoveFile(index, fileUrl)}
                   className="bg-transparent min-w-min p-1 hover:bg-red-600 border-1"
                 >
                   <img src="/delete.svg" alt="delete" className="w-6" />
