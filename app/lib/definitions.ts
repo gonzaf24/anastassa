@@ -39,9 +39,9 @@ export interface UpdateFileUploadProps {
 
 export type ProductProps = {
   id: string;
+  ref: number;
   categoryId: number;
   categoryName: string;
-  ref: number;
   photos: string[];
   description: string;
 };

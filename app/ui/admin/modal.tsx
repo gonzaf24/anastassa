@@ -1,5 +1,5 @@
 import { Button, ModalBody, ModalContent, ModalHeader, Modal as ModalUI, useDisclosure } from '@nextui-org/react';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 
 interface ModalProps {
   children: ReactNode;
@@ -23,10 +23,15 @@ export default function Modal({
   const isOpen = controlledIsOpen ?? internalIsOpen;
   const onOpenChange = controlledOnOpenChange ?? internalOnOpenChange;
 
+  // Función para manejar la apertura del modal
+  const handleOpen = useCallback(() => {
+    onOpen();
+  }, [onOpen]);
+
   return (
     <>
       {buttonTitle && !controlledIsOpen && (
-        <Button color="primary" className="font-bold rounded-none" onPress={onOpen}>
+        <Button color="primary" className="font-bold rounded-none" onPress={handleOpen}>
           <img alt="add" className="w-4" src="/plus.svg" />
           {buttonTitle}
         </Button>
@@ -46,6 +51,7 @@ export default function Modal({
             <>
               <ModalHeader className="flex justify-between items-center">
                 <p>{modalTitle}</p>
+                {/* Uncomment if close button is needed */}
                 {/* <Button
                   className="bg-transparent p-1 h-min min-w-min rounded-full"
                   onClick={onClose}

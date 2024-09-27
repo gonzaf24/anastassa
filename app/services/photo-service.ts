@@ -26,7 +26,6 @@ export const uploadPhoto = async (file: File, folderName: string = 'prendas'): P
 
 export const deletePhoto = async (fileUrl: string): Promise<void> => {
   try {
-    console.log('fileUrl', fileUrl);
     const response = await fetch(`/api/photos?fileUrl=${fileUrl}`, {
       method: 'DELETE',
     });

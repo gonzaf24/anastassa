@@ -1,11 +1,13 @@
 'use server';
 
 import { signIn } from '@/auth';
-import { sql } from '@vercel/postgres';
+import { QueryResultRow, sql } from '@vercel/postgres';
 import { AuthError } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { CategoryProps, ProductProps } from './definitions';
+import { mapProductsDataToProducts } from './mapping-data';
 
 const CreateCategoryFormSchema = z.object({
   name: z.string().nonempty({
@@ -265,3 +267,42 @@ export async function deleteProduct(productId: number) {
   revalidatePath('/admin');
   redirect('/admin');
 }
+
+export const fetchCategoriesData = async () => {
+  try {
+    const data = await sql`SELECT * FROM categories ORDER BY position ASC`;
+    return data.rows as CategoryProps[];
+  } catch (error) {
+    console.error('Database Error:', error);
+    return [];
+  }
+};
+
+export const fetchProductsData = async () => {
+  try {
+    const data = await sql`SELECT products.*, categories.name
+                            FROM products
+                            JOIN categories ON products.category_id = categories.id
+                            ORDER BY products.category_id ASC;`;
+    const products: ProductProps[] = data.rows.map((row: QueryResultRow) => mapProductsDataToProducts(row));
+
+    return products;
+  } catch (error) {
+    console.error('Database Error:', error);
+    return [];
+  }
+};
+
+export const fetchProductsByCategory = async (categoryId: number) => {
+  try {
+    const data = await sql`SELECT products.*, categories.name
+                            FROM products
+                            JOIN categories ON products.category_id = categories.id
+                            WHERE products.category_id = ${categoryId}`;
+    const products: ProductProps[] = data.rows.map((row: QueryResultRow) => mapProductsDataToProducts(row));
+    return products;
+  } catch (error) {
+    console.error('Database Error:', error);
+    return [];
+  }
+};

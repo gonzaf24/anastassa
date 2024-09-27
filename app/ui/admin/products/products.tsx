@@ -1,49 +1,79 @@
-/* eslint-disable no-unused-vars */
-'use client';
-import { CategoryProps, ProductProps } from '@/app/lib/definitions';
+import { useAppContext } from '@/app/context/app-context';
+import { ProductProps } from '@/app/lib/definitions';
 import Modal from '@/app/ui/admin/modal';
 import styles from '@/app/ui/admin/table.module.css';
-import { Button } from '@nextui-org/react';
+import { Button, Spinner } from '@nextui-org/react';
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/table';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import CreateProductForm from './create-product-form';
 import DeleteProduct from './delete-product';
 import UpdateProductForm from './update-product-form';
 
-export default function Products({ categories, products }: { categories: CategoryProps[]; products: ProductProps[] }) {
+export default function Products() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<ProductProps | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const { products, categories, isLoadingProducts } = useAppContext();
 
-  const handleCloseModal = () => {
+  // Close modal callback to avoid unnecessary re-renders
+  const handleCloseModal = useCallback(() => {
     setIsEditModalOpen(false);
-  };
+  }, []);
 
-  const handleEditProduct = (product: ProductProps) => {
+  // Memoize products table rows to avoid re-rendering when not necessary
+  const productRows = useMemo(() => {
+    return products.map((product, index) => (
+      <TableRow key={product.id}>
+        <TableCell className="text-start">{index + 1}</TableCell>
+        <TableCell>{product.id}</TableCell>
+        <TableCell>{product.ref}</TableCell>
+        <TableCell>{product.categoryName}</TableCell>
+        <TableCell>{product.description}</TableCell>
+        <TableCell className="text-center">
+          <Button className="bg-transparent p-1 min-w-min">
+            <img alt="photos" className="w-8" src="/photos.svg" />
+          </Button>
+        </TableCell>
+        <TableCell className="text-center">
+          <Button className="bg-transparent p-1 min-w-min" onPress={() => handleEditProduct(product)}>
+            <img alt="edit" className="w-6" src="/edit.svg" />
+          </Button>
+        </TableCell>
+        <TableCell className="text-center">
+          <Button className="bg-transparent p-1 min-w-min" onPress={() => handleDeleteProduct(product)}>
+            <img alt="delete" className="w-7" src="/delete.svg" />
+          </Button>
+        </TableCell>
+      </TableRow>
+    ));
+  }, [products]);
+
+  const handleEditProduct = useCallback((product: ProductProps) => {
     setSelectedProduct(product);
     setIsEditModalOpen(true);
-  };
+  }, []);
 
-  const handleDeleteProduct = (product: ProductProps) => {
+  const handleDeleteProduct = useCallback((product: ProductProps) => {
     setSelectedProduct(product);
-    setIsAlertDialogOpen((prev) => !prev);
-  };
+    setIsAlertDialogOpen(true);
+  }, []);
 
   return (
     <>
       <Modal buttonTitle="Nuevo Producto" modalTitle="Nuevo Producto">
         <CreateProductForm categories={categories} />
       </Modal>
+
       <Modal isOpen={isEditModalOpen} onOpenChange={setIsEditModalOpen} modalTitle="Editar Producto">
         <UpdateProductForm categories={categories} product={selectedProduct} onClose={handleCloseModal} />
       </Modal>
+
       <DeleteProduct
         isAlertOpen={isAlertDialogOpen}
         product={selectedProduct}
         setIsAlertDialogOpen={setIsAlertDialogOpen}
       />
+
       <Table
         selectionMode="single"
         aria-label="Products table"
@@ -71,53 +101,8 @@ export default function Products({ categories, products }: { categories: Categor
           <TableColumn width={20}>Editar</TableColumn>
           <TableColumn width={20}>Eliminar</TableColumn>
         </TableHeader>
-        <TableBody>
-          {products &&
-            products.map((product, index) => (
-              <TableRow key={product.id}>
-                <TableCell className="text-start">{index + 1}</TableCell>
-                <TableCell>{product.id}</TableCell>
-                <TableCell>{product.ref}</TableCell>
-                <TableCell>{product.categoryName}</TableCell>
-                <TableCell>{product.description}</TableCell>
-                <TableCell className="text-center">
-                  <Button className="bg-transparent p-1 min-w-min">
-                    <img alt="photos" className="w-8" src="/photos.svg" />
-                  </Button>
-                </TableCell>
-                <TableCell className="text-center">
-                  <Button className="bg-transparent p-1 min-w-min" onPress={() => handleEditProduct(product)}>
-                    <img alt="edit" className="w-6" src="/edit.svg" />
-                  </Button>
-                </TableCell>
-                <TableCell className="text-center">
-                  <Button className="bg-transparent p-1 min-w-min" onPress={() => handleDeleteProduct(product)}>
-                    <img alt="delete" className="w-7" src="/delete.svg" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          {/*  <TableRow key="1">
-            <TableCell>0</TableCell>
-            <TableCell>1</TableCell>
-            <TableCell>MUJER-CHALECOS </TableCell>
-            <TableCell>Chaleco de mujer</TableCell>
-            <TableCell className="text-center">
-              <Button className="bg-transparent p-1 min-w-min">
-                <img alt="photos" className="w-8" src="/photos.svg" />
-              </Button>
-            </TableCell>
-            <TableCell className="text-center">
-              <Button className="bg-transparent p-1 min-w-min">
-                <img alt="edit" className="w-6" src="/edit.svg" />
-              </Button>
-            </TableCell>
-            <TableCell className="text-center">
-              <Button className="bg-transparent p-1 min-w-min">
-                <img alt="delete" className="w-7" src="/delete.svg" />
-              </Button>
-            </TableCell>
-          </TableRow> */}
+        <TableBody isLoading={isLoadingProducts} loadingContent={<Spinner label="Buscando productos..." />}>
+          {isLoadingProducts ? [] : productRows}
         </TableBody>
       </Table>
     </>

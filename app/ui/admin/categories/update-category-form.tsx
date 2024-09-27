@@ -1,7 +1,8 @@
+import { useAppContext } from '@/app/context/app-context';
 import { updateCategory } from '@/app/lib/actions';
 import { CategoryProps } from '@/app/lib/definitions';
 import { Button, Input } from '@nextui-org/react';
-import React, { startTransition, useActionState, useState } from 'react';
+import React, { startTransition, useActionState, useCallback, useState } from 'react';
 
 export default function UpdateCategoryForm({
   category,
@@ -14,42 +15,38 @@ export default function UpdateCategoryForm({
   const [nameError, setNameError] = useState(false);
   const [positionError, setPositionError] = useState(false);
   const [state, dispatch] = useActionState(updateCategory, initialState);
+  const { refreshCategories } = useAppContext();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    let name = formData.get('name') as string;
-    const position = formData.get('position') as string;
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      let name = formData.get('name') as string;
+      const position = formData.get('position') as string;
 
-    // Convertir el nombre a mayúsculas
-    name = name.trim().toUpperCase();
+      // Convertir el nombre a mayúsculas
+      name = name.trim().toUpperCase();
+      formData.set('name', name); // Actualiza el FormData con el nombre en mayúsculas
 
-    // Actualiza el FormData con el nombre en mayúsculas
-    formData.set('name', name);
+      // Basic validation
+      const isNameValid = name.trim() !== '';
+      const isPositionValid = position.trim() !== '';
 
-    // Basic validation
-    if (!name.trim()) {
-      setNameError(true);
-    } else {
-      setNameError(false);
-    }
+      setNameError(!isNameValid);
+      setPositionError(!isPositionValid);
 
-    if (!position.trim()) {
-      setPositionError(true);
-    } else {
-      setPositionError(false);
-    }
+      if (!isNameValid || !isPositionValid) {
+        return; // Stop form submission if there's an error
+      }
 
-    if (!name.trim() || !position.trim()) {
-      return; // Stop form submission if there's an error
-    }
-
-    startTransition(() => {
-      dispatch(formData);
-    });
-    //Aqui implementar la actualizacion de la categoria con los datos del formulario.
-    onClose();
-  };
+      startTransition(() => {
+        dispatch(formData);
+        refreshCategories();
+        onClose?.();
+      });
+    },
+    [dispatch, onClose]
+  );
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -62,9 +59,9 @@ export default function UpdateCategoryForm({
         errorMessage={nameError ? 'El nombre es obligatorio.' : undefined}
         defaultValue={category?.name}
       />
-      <div id="date_end-error" aria-live="polite" aria-atomic="true">
-        {state.errors?.name &&
-          state.errors.name.map((error: string) => (
+      <div id="name-error" aria-live="polite" aria-atomic="true">
+        {state?.errors?.name &&
+          state?.errors.name.map((error: string) => (
             <p className="mt-2 text-sm text-red-500" key={error}>
               {error}
             </p>
@@ -79,16 +76,16 @@ export default function UpdateCategoryForm({
         defaultValue={category?.position.toString()}
       />
       <Input type="hidden" name="id" defaultValue={category?.id.toString()} />
-      <div id="date_end-error" aria-live="polite" aria-atomic="true">
-        {state.errors?.position &&
-          state.errors.position.map((error: string) => (
+      <div id="position-error" aria-live="polite" aria-atomic="true">
+        {state?.errors?.position &&
+          state?.errors.position.map((error: string) => (
             <p className="mt-2 text-sm text-red-500" key={error}>
               {error}
             </p>
           ))}
       </div>
-      <div id="date_start-error" aria-live="polite" aria-atomic="true">
-        {state.message && <p className="mt-2 text-sm text-red-500">{state.message}</p>}
+      <div id="form-message" aria-live="polite" aria-atomic="true">
+        {state?.message && <p className="mt-2 text-sm text-red-500">{state?.message}</p>}
       </div>
       <div className="flex gap-3 w-full mt-4 mb-4">
         <Button onClick={onClose} className="w-full">

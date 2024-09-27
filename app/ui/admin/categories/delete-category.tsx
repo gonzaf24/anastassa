@@ -1,6 +1,6 @@
 'use client';
-import { deleteCategory, deleteProduct } from '@/app/lib/actions';
-import { fetchProductsByCategory } from '@/app/lib/data';
+import { useAppContext } from '@/app/context/app-context';
+import { deleteCategory, deleteProduct, fetchProductsByCategory } from '@/app/lib/actions';
 import { CategoryProps } from '@/app/lib/definitions';
 import { deletePhoto } from '@/app/services/photo-service';
 import { useCallback, useState } from 'react';
@@ -16,31 +16,36 @@ export default function DeleteCategory({
   setIsAlertDialogOpen: (isOpen: boolean) => void;
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const { refreshCategories, refreshProducts } = useAppContext();
 
   const onConfirmDialog = useCallback(async () => {
+    if (!category) return;
+
     setIsLoading(true);
-    if (category) {
-      const products = await fetchProductsByCategory(category?.id);
-      //de cada producto primero eliminar las fotos y luego el producto
-      const photoDeletePromises = products.map(async (product) => {
-        return (product.photos || []).map(async (photo) => await deletePhoto(photo));
-      });
+    try {
+      const products = await fetchProductsByCategory(category.id);
+      // Elimina las fotos y los productos
+      const photoDeletePromises = products.flatMap((product) =>
+        (product.photos || []).map((photo) => deletePhoto(photo))
+      );
       await Promise.all(photoDeletePromises);
-      //eliminar el producto
-      products.forEach(async (product) => {
-        await deleteProduct(parseInt(product.id));
-      });
-      // Elimina la categoría una vez eliminadas las fotos
-
-      await deleteCategory(category?.id);
+      const productDeletePromises = products.map((product) => deleteProduct(parseInt(product.id)));
+      await Promise.all(productDeletePromises);
+      // Elimina la categoría
+      await deleteCategory(category.id);
+    } catch (error) {
+      console.log('Error al eliminar la categoría:', error);
+    } finally {
+      setIsLoading(false);
+      refreshCategories();
+      refreshProducts();
+      setIsAlertDialogOpen(false);
     }
-    setIsLoading(false);
-    setIsAlertDialogOpen(false);
-  }, [category]);
+  }, [category, setIsAlertDialogOpen]);
 
-  const onCancel = () => {
+  const onCancel = useCallback(() => {
     setIsAlertDialogOpen(false);
-  };
+  }, [setIsAlertDialogOpen]);
 
   return (
     <AlertDialog
@@ -48,14 +53,14 @@ export default function DeleteCategory({
       isLoading={isLoading}
       handleClose={onCancel}
       handleConfirm={onConfirmDialog}
-      title={`Estas seguro de eliminar la categoría ${category?.name}?`}
+      title={`¿Estás seguro de eliminar la categoría ${category?.name}?`}
     >
       <span>
         {`También se eliminarán todos los `}
         <strong>PRODUCTOS</strong>
         {` de la categoría `}
         <strong>{category?.name}</strong>
-        {`. Esta acción no se podrá deshacer una vez confirmda.`}
+        {`. Esta acción no se podrá deshacer una vez confirmada.`}
       </span>
     </AlertDialog>
   );

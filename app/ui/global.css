@@ -87,3 +87,8 @@ input[type='number']::-webkit-outer-spin-button {
 .data-[focus-visible='true']:outline-focus {
   outline-color: red !important; /* Customize the outline color */
 }
+
+.max-height {
+  height: calc(100dvh - 148px);
+  overflow: auto;
+}

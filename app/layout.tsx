@@ -6,6 +6,7 @@ import { SessionProvider } from 'next-auth/react';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
+import { AppProvider } from './context/app-context';
 import { Providers } from './providers';
 import { Menu as AdminMenu } from './ui/admin/menu';
 import { Menu as UserMenu } from './ui/menu';
@@ -42,33 +43,35 @@ export default async function RootLayout({ children }: LayoutProps) {
       <body className={`${inter.className} antialiased`}>
         <SessionProvider session={session}>
           <Providers>
-            <div className="relative flex flex-col">
-              <Navbar session={session} />
-              <main className="container mx-auto max-w-7xl pt-0 px-6 sm:px-0 flex-grow flex flex-row gap-4 min-h-84">
-                <div className="hidden sm:flex flex-col gap-4 max-w-[200px] w-full bg-[#ef8482]">
-                  <UserMenu />
-                  {session && <AdminMenu />}
-                </div>
-                <div className="flex flex-col w-full gap-4">{children}</div>
-              </main>
-              <footer className="w-full flex items-center justify-center py-3 gap-2">
-                <Link
-                  className="flex items-center gap-1 text-current text-default-600"
-                  href="https://instagram.com/anastassa__"
-                  rel="noreferrer"
-                  target="_blank"
-                  title="Instagram"
-                >
-                  <img alt="Anastassa instagram" className="w-4 h-4" src="/instagram.svg" />
-                  anastassa__
-                </Link>
-                <span className="text-[#ef8482]">|</span>
-                <span className="flex items-center gap-1 text-current text-default-600">
-                  <img alt="Email" className="w-5 h-5" src="/email.svg" />
-                  info@anastassa.com
-                </span>
-              </footer>
-            </div>
+            <AppProvider>
+              <div className="relative flex flex-col">
+                <Navbar session={session} />
+                <main className="container mx-auto max-w-7xl pt-0 px-6 sm:px-0 flex-grow flex flex-row gap-4 min-h-84">
+                  <div className="hidden sm:flex flex-col gap-4 max-w-[200px] w-full bg-[#ef8482]">
+                    <UserMenu />
+                    {session && <AdminMenu />}
+                  </div>
+                  <div className="flex flex-col w-full gap-4">{children}</div>
+                </main>
+                <footer className="w-full flex items-center justify-center py-3 gap-2">
+                  <Link
+                    className="flex items-center gap-1 text-current text-default-600"
+                    href="https://instagram.com/anastassa__"
+                    rel="noreferrer"
+                    target="_blank"
+                    title="Instagram"
+                  >
+                    <img alt="Anastassa instagram" className="w-4 h-4" src="/instagram.svg" />
+                    anastassa__
+                  </Link>
+                  <span className="text-[#ef8482]">|</span>
+                  <span className="flex items-center gap-1 text-current text-default-600">
+                    <img alt="Email" className="w-5 h-5" src="/email.svg" />
+                    info@anastassa.com
+                  </span>
+                </footer>
+              </div>
+            </AppProvider>
           </Providers>
         </SessionProvider>
       </body>

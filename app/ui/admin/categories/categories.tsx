@@ -1,35 +1,57 @@
 /* eslint-disable no-unused-vars */
 'use client';
+import { useAppContext } from '@/app/context/app-context';
 import { CategoryProps } from '@/app/lib/definitions';
 import Modal from '@/app/ui/admin/modal';
 import styles from '@/app/ui/admin/table.module.css';
-import { Button } from '@nextui-org/react';
+import { Button, Spinner } from '@nextui-org/react';
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/table';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import NewCategoryForm from './create-category-form';
+import DeleteCategory from './delete-category';
 import EditCategoryForm from './update-category-form';
 
-import DeleteCategory from './delete-category';
-export default function Categories({ categories }: { categories: CategoryProps[] }) {
+export default function Categories() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryProps | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { categories, isLoadingCategories } = useAppContext();
 
   const handleCloseModal = () => {
     setIsEditModalOpen(false);
   };
 
-  const handleDeleteCategory = (category: CategoryProps) => {
+  const handleDeleteCategory = useCallback((category: CategoryProps) => {
     setSelectedCategory(category);
-    setIsAlertDialogOpen((prev) => !prev);
-  };
+    setIsAlertDialogOpen(true);
+  }, []);
 
-  const handleEditCategory = (category: CategoryProps) => {
+  const handleEditCategory = useCallback((category: CategoryProps) => {
     setSelectedCategory(category);
     setIsEditModalOpen(true);
-  };
+  }, []);
+
+  // Memoizamos las filas de la tabla
+  const categoryRows = useMemo(() => {
+    return categories.map((category, index) => (
+      <TableRow key={category.id}>
+        <TableCell className="text-start">{index + 1}</TableCell>
+        <TableCell>{category.id}</TableCell>
+        <TableCell>{category.name}</TableCell>
+        <TableCell>{category.position}</TableCell>
+        <TableCell className="text-center">
+          <Button className="bg-transparent p-1 min-w-min" onPress={() => handleEditCategory(category)}>
+            <img alt="edit" className="w-6" src="/edit.svg" />
+          </Button>
+        </TableCell>
+        <TableCell className="text-center">
+          <Button className="bg-transparent p-1 min-w-min" onPress={() => handleDeleteCategory(category)}>
+            <img alt="delete" className="w-7" src="/delete.svg" />
+          </Button>
+        </TableCell>
+      </TableRow>
+    ));
+  }, [categories, handleEditCategory, handleDeleteCategory]);
 
   return (
     <div className="text-end">
@@ -69,26 +91,8 @@ export default function Categories({ categories }: { categories: CategoryProps[]
           <TableColumn width={20}>Editar</TableColumn>
           <TableColumn width={20}>Eliminar</TableColumn>
         </TableHeader>
-        <TableBody>
-          {categories &&
-            categories.map((category, index) => (
-              <TableRow key={category.id}>
-                <TableCell className="text-start">{index + 1}</TableCell>
-                <TableCell>{category.id}</TableCell>
-                <TableCell>{category.name}</TableCell>
-                <TableCell>{category.position}</TableCell>
-                <TableCell className="text-center">
-                  <Button className="bg-transparent p-1 min-w-min" onPress={() => handleEditCategory(category)}>
-                    <img alt="edit" className="w-6" src="/edit.svg" />
-                  </Button>
-                </TableCell>
-                <TableCell className="text-center">
-                  <Button className="bg-transparent p-1 min-w-min" onPress={() => handleDeleteCategory(category)}>
-                    <img alt="delete" className="w-7" src="/delete.svg" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+        <TableBody isLoading={isLoadingCategories} loadingContent={<Spinner label="Buscando categorias..." />}>
+          {isLoadingCategories ? [] : categoryRows}
         </TableBody>
       </Table>
     </div>
