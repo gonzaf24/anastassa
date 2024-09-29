@@ -70,7 +70,6 @@ const config: Config = {
       },
     },
   },
-  darkMode: ['class', 'class'],
   plugins: [nextui()],
 };
 
