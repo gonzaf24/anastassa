@@ -28,7 +28,7 @@ input[type='number']::-webkit-outer-spin-button {
     --primary: 1 77% 72%; /* Rojo vibrante */
     --primary-focus: 1 83% 65%; /* Rojo más saturado */
     --primary-foreground: 220 15% 20%; /* Azul oscuro */
-    --secondary: 0 0% 100%; /*220 14.3% 95.9%; Azul muy claro */
+    --secondary: 220 14.3% 95.9%; /* Azul muy claro */
     --secondary-focus: 220 20% 90%; /* Azul un poco más oscuro */
     --secondary-foreground: 220 30% 20%; /* Azul oscuro */
     --muted: 220 14.3% 95.9%; /* Azul muy claro */

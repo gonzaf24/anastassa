@@ -1,10 +1,9 @@
-// app/providers.tsx
 'use client';
-import { useRouter } from 'next/navigation';
 
 import { NextUIProvider } from '@nextui-org/react';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { ThemeProviderProps } from 'next-themes/dist/types';
+import { useRouter } from 'next/navigation';
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -15,8 +14,8 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   const router = useRouter();
 
   return (
-    <NextUIProvider navigate={router.push}>
-      <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
-    </NextUIProvider>
+    <NextThemesProvider {...themeProps} defaultTheme="light">
+      <NextUIProvider navigate={router.push}>{children}</NextUIProvider>
+    </NextThemesProvider>
   );
 }
