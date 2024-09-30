@@ -8,6 +8,7 @@ interface ModalProps {
   isOpen?: boolean;
   // eslint-disable-next-line no-unused-vars
   onOpenChange?: (isOpen: boolean) => void;
+  isDismissable?: boolean;
 }
 
 export default function Modal({
@@ -16,6 +17,7 @@ export default function Modal({
   modalTitle,
   isOpen: controlledIsOpen,
   onOpenChange: controlledOnOpenChange,
+  isDismissable: isDismissable = false,
 }: ModalProps) {
   const { isOpen: internalIsOpen, onOpen, onOpenChange: internalOnOpenChange } = useDisclosure();
 
@@ -40,8 +42,8 @@ export default function Modal({
       <ModalUI
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        isDismissable={false}
-        hideCloseButton
+        isDismissable={isDismissable}
+        hideCloseButton={!isDismissable}
         backdrop="blur"
         size="xl"
         scrollBehavior="inside"
