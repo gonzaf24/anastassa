@@ -43,7 +43,7 @@ export const Navbar = ({ session }: { session: any }) => {
       >
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-center items-center gap-1" href="/">
-            <img alt="Anastassa logo" className="h-24" src="/anastassa-logo.png" />
+            <img alt="Anastassa logo" className="h-20" src="/anastassa-logo.png" />
           </NextLink>
         </NavbarBrand>
       </NavbarContent>

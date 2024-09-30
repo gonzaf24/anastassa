@@ -35,7 +35,11 @@ export default function CreateProductForm({
     const ref = formData.get('ref') as string;
 
     // Convertir la descripcion a Capitalize
-    description = description.trim().toUpperCase();
+    // Convertir la descripción a Capitalize (Primera letra mayúscula y el resto minúsculas)
+    description = description
+      .toLowerCase()
+      .replace(/^\w/, (c) => c.toUpperCase())
+      .trim();
     formData.set('description', description);
 
     // Validación básica
@@ -121,7 +125,6 @@ export default function CreateProductForm({
         isRequired
         isInvalid={descriptionError}
         errorMessage={descriptionError ? 'La descripción es obligatoria.' : undefined}
-        style={{ textTransform: 'uppercase' }}
       />
 
       <MultiFileUpload files={files} setFiles={setFiles} />

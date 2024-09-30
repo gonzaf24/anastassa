@@ -47,9 +47,13 @@ export default function UpdateProductForm({ categories, product, onClose }: Upda
       const form = event.currentTarget;
       const formData = new FormData(form);
       const categoryId = formData.get('category_id') as string;
-      let description = (formData.get('description') as string).trim().toUpperCase();
+      let description = formData.get('description') as string;
       const ref = formData.get('ref') as string;
 
+      description = description
+        .toLowerCase()
+        .replace(/^\w/, (c) => c.toUpperCase())
+        .trim();
       formData.set('description', description);
 
       if (!categoryId || !description || !ref) {
@@ -153,7 +157,6 @@ export default function UpdateProductForm({ categories, product, onClose }: Upda
         isRequired
         isInvalid={descriptionError}
         errorMessage={descriptionError ? 'La descripción es obligatoria.' : undefined}
-        style={{ textTransform: 'uppercase' }}
       />
 
       <UpdateMultiFileUpload

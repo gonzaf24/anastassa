@@ -37,11 +37,19 @@ export interface UpdateFileUploadProps {
   top?: boolean;
 }
 
+export type ProductsProps = {
+  id: number;
+  photos: string[];
+  ref: number;
+  categoryId: number;
+  description: string;
+};
+
 export type ProductProps = {
   id: string;
+  photos: string[];
   ref: number;
   categoryId: number;
   categoryName: string;
-  photos: string[];
   description: string;
 };

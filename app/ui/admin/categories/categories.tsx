@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
 'use client';
 import { useAppContext } from '@/app/context/app-context';
 import { CategoryProps } from '@/app/lib/definitions';
 import Modal from '@/app/ui/admin/modal';
-import styles from '@/app/ui/admin/table.module.css';
 import { Button, Spinner } from '@nextui-org/react';
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -72,13 +70,13 @@ export default function Categories() {
         aria-label="Categories table"
         fullWidth
         isHeaderSticky
-        className={styles.table}
+        className="w-full border-collapse mt-5 h-[50dvh] md:h-[60dvh]" // Estilos de tabla principal
         color="primary"
         radius="none"
         classNames={{
-          wrapper: 'p-0',
-          th: 'bg-primary font-bold text-black rounded-none border-1',
-          td: 'rounded-none border-1',
+          wrapper: 'p-0 pb-[100px]',
+          th: 'bg-primary font-bold text-black rounded-none first:rounded-none last:rounded-none border-1', // Evitar borde redondeado en la primera y última columna
+          td: 'rounded-none border-1 first:rounded-none last:rounded-none', // Lo mismo para las celdas
         }}
       >
         <TableHeader className="bg-black">

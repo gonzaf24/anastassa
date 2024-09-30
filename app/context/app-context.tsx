@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchCategoriesData, fetchProductsData } from '@/app/lib/actions';
+import { fetchCategoriesData, fetchProductsByCategory, fetchProductsData } from '@/app/lib/actions';
 import { CategoryProps, ProductProps } from '@/app/lib/definitions';
 import { createContext, FC, ReactNode, useContext, useEffect, useState } from 'react';
 
@@ -15,6 +15,8 @@ interface AppContextType {
   products: ProductProps[];
   isLoadingProducts: boolean;
   refreshProducts: () => Promise<void>;
+  getCategoryProducts: (categoryId: number) => Promise<ProductProps[]>;
+  isLoadingCategoryProducts: boolean;
 }
 
 const AppContext = createContext<AppContextType>({
@@ -24,6 +26,8 @@ const AppContext = createContext<AppContextType>({
   products: [],
   isLoadingProducts: false,
   refreshProducts: async () => {},
+  getCategoryProducts: async () => [],
+  isLoadingCategoryProducts: false,
 });
 
 export const useAppContext = (): AppContextType => {
@@ -39,6 +43,7 @@ export const AppProvider: FC<ProviderProps> = ({ children }) => {
   const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(false);
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState<boolean>(false);
+  const [isLoadingCategoryProducts, setIsLoadingCategoryProducts] = useState<boolean>(false);
 
   // Función para refrescar las categorías
   const refreshCategories = async () => {
@@ -66,6 +71,19 @@ export const AppProvider: FC<ProviderProps> = ({ children }) => {
     }
   };
 
+  // Función para obtener productos por categoría
+  const getCategoryProducts = async (categoryId: number): Promise<ProductProps[]> => {
+    setIsLoadingCategoryProducts(true);
+    try {
+      return await fetchProductsByCategory(categoryId);
+    } catch (error) {
+      console.error(`Error fetching products for category ${categoryId}:`, error);
+      return [];
+    } finally {
+      setIsLoadingCategoryProducts(false);
+    }
+  };
+
   // Efecto para cargar las categorías y productos al montar el componente
   useEffect(() => {
     refreshCategories();
@@ -81,6 +99,8 @@ export const AppProvider: FC<ProviderProps> = ({ children }) => {
         products,
         isLoadingProducts,
         refreshProducts,
+        getCategoryProducts,
+        isLoadingCategoryProducts,
       }}
     >
       {children}

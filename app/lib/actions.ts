@@ -283,7 +283,7 @@ export const fetchProductsData = async () => {
     const data = await sql`SELECT products.*, categories.name
                             FROM products
                             JOIN categories ON products.category_id = categories.id
-                            ORDER BY products.category_id ASC;`;
+                            ORDER BY products.category_id ASC , products.ref ASC`;
     const products: ProductProps[] = data.rows.map((row: QueryResultRow) => mapProductsDataToProducts(row));
 
     return products;
@@ -298,7 +298,8 @@ export const fetchProductsByCategory = async (categoryId: number) => {
     const data = await sql`SELECT products.*, categories.name
                             FROM products
                             JOIN categories ON products.category_id = categories.id
-                            WHERE products.category_id = ${categoryId}`;
+                            WHERE products.category_id = ${categoryId}
+                            ORDER BY products.ref ASC`;
     const products: ProductProps[] = data.rows.map((row: QueryResultRow) => mapProductsDataToProducts(row));
     return products;
   } catch (error) {

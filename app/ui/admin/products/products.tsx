@@ -1,7 +1,6 @@
 import { useAppContext } from '@/app/context/app-context';
 import { ProductProps } from '@/app/lib/definitions';
 import Modal from '@/app/ui/admin/modal';
-import styles from '@/app/ui/admin/table.module.css';
 import { Button, Spinner } from '@nextui-org/react';
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/table';
 import { useCallback, useMemo, useState } from 'react';
@@ -80,13 +79,13 @@ export default function Products() {
         isStriped
         fullWidth
         isHeaderSticky
-        className={styles.table}
+        className="w-full border-collapse mt-5 h-[50dvh] md:h-[60dvh] rounded-none" // Estilos de tabla principal
         color="primary"
         radius="none"
         classNames={{
-          wrapper: 'p-0',
-          th: 'bg-primary font-bold text-black rounded-none border-1',
-          td: 'rounded-none border-1',
+          wrapper: 'p-0 rounded-none',
+          th: 'bg-primary font-bold text-black rounded-none first:rounded-none last:rounded-none border-1', // Evitar borde redondeado en la primera y última columna
+          td: 'rounded-none border-1 first:rounded-none last:rounded-none', // Lo mismo para las celdas
         }}
       >
         <TableHeader className="bg-black">

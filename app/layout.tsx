@@ -4,6 +4,7 @@ import { auth } from '@/auth';
 import { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import Link from 'next/link';
+import Script from 'next/script';
 import { ReactNode } from 'react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { AppProvider } from './context/app-context';
@@ -39,6 +40,16 @@ export default async function RootLayout({ children }: LayoutProps) {
         <link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon" />
         <meta content="#da532c" name="msapplication-TileColor" />
         <meta content="#ffffff" name="theme-color" />
+        {/* Google Analytics */}
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-Q9PV1T5C2C"></Script>
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Q9PV1T5C2C');
+          `}
+        </Script>
       </head>
       <body className={`${inter.className} antialiased`}>
         <SessionProvider session={session}>
@@ -46,7 +57,7 @@ export default async function RootLayout({ children }: LayoutProps) {
             <AppProvider>
               <div className="relative flex flex-col">
                 <Navbar session={session} />
-                <main className="container mx-auto max-w-7xl pt-0 px-6 sm:px-0 flex-grow flex flex-row gap-4 min-h-84">
+                <main className="max-height container mx-auto max-w-7xl pt-0 px-6 sm:px-0 flex-grow flex flex-row gap-4 min-h-84">
                   <div className="hidden sm:flex flex-col gap-4 max-w-[200px] w-full bg-[#ef8482]">
                     <UserMenu />
                     {session && <AdminMenu />}
