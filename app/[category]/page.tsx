@@ -3,15 +3,14 @@ import CategoryProductsList from '../ui/category-products-list';
 
 const texts = {
   title: 'Anastassa',
-  description: 'Ropa de mujer, Uruguay',
+  description: 'Ropa de mujer, Montevideo - Canelones - Punta del este, Uruguay',
 };
 
 export async function generateMetadata({ params }: { params: { category: string } }) {
-  const { numberPart, textPart } = parseCategoryParam(params.category);
-  const descriptionText = texts.description;
+  const { textPart } = parseCategoryParam(params.category);
   const title = texts.title;
-  const description = `${textPart} - ${descriptionText}`;
-  const image = `${process.env.BASE_URL}/opengraph_image.png`;
+  const description = `${textPart} - ${texts.description}`;
+  const image = `${process.env.BASE_URL}/anastassa-logo-alt.png`;
   const url = `${process.env.BASE_URL}/${params.category}`;
 
   return {

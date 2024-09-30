@@ -1,7 +1,6 @@
 import { inter } from '@/app/ui/fonts';
 import '@/app/ui/global.css';
 import { auth } from '@/auth';
-import { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -12,15 +11,6 @@ import { Providers } from './providers';
 import { Menu as AdminMenu } from './ui/admin/menu';
 import { Menu as UserMenu } from './ui/menu';
 import { Navbar } from './ui/navbar';
-
-export const metadata: Metadata = {
-  title: {
-    template: '%s | Anastassa',
-    default: 'Anastassa',
-  },
-  description: 'Moda y diseño Europeo',
-  metadataBase: new URL('https://anastassa.vercel.sh'),
-};
 
 type LayoutProps = {
   children: ReactNode;

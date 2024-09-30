@@ -2,13 +2,12 @@ import ProductList from './ui/product-list';
 
 const texts = {
   title: 'Anastassa',
-  description: 'Ropa de mujer en Montevideo - Canelones - Punta del este, Uruguay',
+  description: 'Ropa de mujer, Montevideo - Canelones - Punta del este, Uruguay',
 };
 
 export async function generateMetadata() {
-  const descriptionText = texts.description;
   const title = texts.title;
-  const description = descriptionText;
+  const description = texts.description;
   const image = `${process.env.BASE_URL}/anastassa-logo-alt.png`;
   const url = `${process.env.BASE_URL}`;
 
