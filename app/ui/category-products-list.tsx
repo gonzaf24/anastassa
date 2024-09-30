@@ -41,7 +41,7 @@ export default function CategoryProductsList({ categoryId }: { categoryId: numbe
   // Mostramos el Skeleton mientras los productos están cargando
   if (isLoadingCategoryProducts) {
     return (
-      <div className="flex flex-wrap gap-4 sm:gap-10 justify-start items-start">
+      <div className="flex flex-wrap sm:gap-10 justify-center items-center md:justify-start md:items-start">
         <ProductListSkeleton />
       </div>
     );
@@ -49,7 +49,7 @@ export default function CategoryProductsList({ categoryId }: { categoryId: numbe
 
   // Mostrar la lista de productos cuando la carga haya terminado
   return (
-    <div className="flex flex-wrap w-full gap-4 sm:gap-10 justify-start items-start">
+    <div className="flex flex-wrap w-full gap-4 sm:gap-10 justify-center items-center md:justify-start md:items-start">
       {categoryProducts.map((product) => (
         <ProductCard key={product.ref} product={product} onProductSelect={onProductClick} />
       ))}

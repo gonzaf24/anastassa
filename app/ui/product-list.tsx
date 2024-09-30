@@ -19,7 +19,7 @@ export default function ProductList() {
   // Mostramos el Skeleton mientras los productos están cargando
   if (isLoadingProducts) {
     return (
-      <div className="flex flex-wrap gap-4 sm:gap-10 justify-start items-start">
+      <div className="flex flex-wrap gap-4 sm:gap-10 justify-center items-center md:justify-start md:items-start">
         <ProductListSkeleton />
       </div>
     );
@@ -27,7 +27,7 @@ export default function ProductList() {
 
   // Mostrar la lista de productos cuando la carga haya terminado
   return (
-    <div className="flex flex-wrap w-full gap-4 sm:gap-10 justify-start items-start">
+    <div className="flex flex-wrap w-full gap-4 sm:gap-10 justify-center items-center md:justify-start md:items-start">
       {products.map((product) => (
         <ProductCard key={product.ref} product={product} onProductSelect={onProductClick} />
       ))}
