@@ -47,12 +47,16 @@ export default function CategoryProductsList({ categoryId }: { categoryId: numbe
     );
   }
 
+  // Verifica si el número de productos es impar, y si es así, agrega un producto vacío
+  const isImpar = categoryProducts.length % 2 !== 0;
+
   // Mostrar la lista de productos cuando la carga haya terminado
   return (
     <div className="flex flex-wrap w-full gap-4 sm:gap-10 justify-center items-center md:justify-start md:items-start">
       {categoryProducts.map((product) => (
         <ProductCard key={product.ref} product={product} onProductSelect={onProductClick} />
       ))}
+      {isImpar && <div className="w-[150px] md:w-[225px]"></div>}
       {selectedPoduct && <ProductDrawer open={open} product={selectedPoduct} setOpen={setOpen} />}
     </div>
   );

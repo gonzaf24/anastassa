@@ -36,7 +36,7 @@ export function ProductCardSkeleton() {
 // Skeleton for the entire product list
 export function ProductListSkeleton() {
   return (
-    <div className="flex flex-wrap gap-4 sm:gap-10 justify-start items-start">
+    <div className="flex flex-wrap m-auto gap-4 sm:gap-10 justify-center md:justify-start md:items-start">
       {Array(8)
         .fill(0)
         .map((_, index) => (

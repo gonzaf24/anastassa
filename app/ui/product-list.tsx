@@ -18,19 +18,19 @@ export default function ProductList() {
 
   // Mostramos el Skeleton mientras los productos están cargando
   if (isLoadingProducts) {
-    return (
-      <div className="flex flex-wrap gap-4 sm:gap-10 justify-center items-center md:justify-start md:items-start">
-        <ProductListSkeleton />
-      </div>
-    );
+    return <ProductListSkeleton />;
   }
+
+  // Verifica si el número de productos es impar, y si es así, agrega un producto vacío
+  const isImpar = products.length % 2 !== 0;
 
   // Mostrar la lista de productos cuando la carga haya terminado
   return (
-    <div className="flex flex-wrap w-full gap-4 sm:gap-10 justify-center items-center md:justify-start md:items-start">
+    <div className="flex flex-wrap w-full gap-4 sm:gap-10 justify-center md:justify-start md:items-start">
       {products.map((product) => (
         <ProductCard key={product.ref} product={product} onProductSelect={onProductClick} />
       ))}
+      {isImpar && <div className="w-[150px] md:w-[225px]"></div>} {/* Espacio vacío en el grid */}
       {selectedProduct && <ProductDrawer open={open} product={selectedProduct} setOpen={setOpen} />}
     </div>
   );
