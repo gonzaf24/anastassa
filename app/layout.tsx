@@ -3,7 +3,7 @@ import '@/app/ui/global.css';
 import { auth } from '@/auth';
 import { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
-import Image from 'next/image';
+
 import Link from 'next/link';
 import Script from 'next/script';
 import { ReactNode } from 'react';
@@ -92,13 +92,7 @@ export default async function RootLayout({ children }: LayoutProps) {
                         target="_blank"
                         title="Instagram"
                       >
-                        <Image
-                          alt="Likedin"
-                          className="w-4 h-4 opacity-70"
-                          src="/instagram.svg"
-                          width={16}
-                          height={16}
-                        />
+                        <img alt="Likedin" className="w-4 h-4 opacity-70" src="/instagram.svg" width={16} height={16} />
                         anastassa__
                       </Link>
                     </div>
