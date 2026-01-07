@@ -8,7 +8,7 @@ const texts = {
 
 export async function generateMetadata({ params }: { params: { category: string } }) {
   const { textPart } = parseCategoryParam(params.category);
-  const title = texts.title;
+  const title = textPart;
   const description = `${textPart} - ${texts.description}`;
   const image = `${process.env.BASE_URL}/anastassa-logo-alt.png`;
   const url = `${process.env.BASE_URL}/${params.category}`;

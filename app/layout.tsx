@@ -1,6 +1,7 @@
 import { inter } from '@/app/ui/fonts';
 import '@/app/ui/global.css';
 import { auth } from '@/auth';
+import { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,6 +13,20 @@ import { Providers } from './providers';
 import { Menu as AdminMenu } from './ui/admin/menu';
 import { Menu as UserMenu } from './ui/menu';
 import { Navbar } from './ui/navbar';
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s | Anastassa',
+    default: 'Anastassa',
+  },
+  description: 'Ropa de mujer, Montevideo - Canelones - Punta del este, Uruguay',
+  openGraph: {
+    type: 'website',
+    locale: 'es_UY',
+    url: process.env.BASE_URL,
+    siteName: 'Anastassa',
+  },
+};
 
 type LayoutProps = {
   children: ReactNode;
@@ -40,6 +55,20 @@ export default async function RootLayout({ children }: LayoutProps) {
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${gaId}');
+          `}
+        </Script>
+        <Script id="json-ld-organization" type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Anastassa",
+              "url": "${process.env.BASE_URL || 'https://anastassa.com'}",
+              "logo": "${process.env.BASE_URL || 'https://anastassa.com'}/anastassa-logo-alt.png",
+              "sameAs": [
+                "https://instagram.com/anastassa__"
+              ]
+            }
           `}
         </Script>
         <meta name="google-site-verification" content="IFAEhM0QwYMKh_rfGoyXigK5JGTto6HbwSmPgVzzIbw" />

@@ -12,7 +12,9 @@ export async function generateMetadata() {
   const url = `${process.env.BASE_URL}`;
 
   return {
-    title: title,
+    title: {
+      absolute: 'Anastassa',
+    },
     description: description,
     url: url,
     openGraph: {
