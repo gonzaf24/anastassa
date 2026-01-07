@@ -19,33 +19,28 @@ input[type='number']::-webkit-outer-spin-button {
 
 @layer base {
   :root {
-    --background: 0 0% 100%; /* Blanco puro */
-    --foreground: 224 71.4% 4.1%; /* Azul muy oscuro (casi negro) */
-    --card: 0 0% 100%; /* Blanco puro */
-    --card-foreground: 224 71.4% 4.1%; /* Azul muy oscuro (casi negro) */
-    --popover: 0 0% 100%; /* Blanco puro */
-    --popover-foreground: 224 71.4% 4.1%; /* Azul muy oscuro (casi negro) */
-    --primary: 1 77% 72%; /* Rojo vibrante */
-    --primary-focus: 1 83% 65%; /* Rojo más saturado */
-    --primary-foreground: 220 15% 20%; /* Azul oscuro */
-    --secondary: 220 14.3% 95.9%; /* Azul muy claro */
-    --secondary-focus: 220 20% 90%; /* Azul un poco más oscuro */
-    --secondary-foreground: 220 30% 20%; /* Azul oscuro */
-    --muted: 220 14.3% 95.9%; /* Azul muy claro */
-    --muted-foreground: 220 8.9% 46.1%; /* Gris azulado */
-    --accent: 220 14.3% 95.9%; /* Azul muy claro */
-    --accent-foreground: 220.9 39.3% 11%; /* Azul muy oscuro */
-    --destructive: 0 84.2% 60.2%; /* Rojo fuerte */
-    --destructive-foreground: 210 20% 98%; /* Blanco muy claro */
-    --border: 220 13% 91%; /* Gris muy claro */
-    --input: 220 13% 91%; /* Gris muy claro */
-    --ring: 224 71.4% 4.1%; /* Azul muy oscuro (casi negro) */
-    --chart-1: 12 76% 61%; /* Naranja brillante */
-    --chart-2: 173 58% 39%; /* Verde azulado */
-    --chart-3: 197 37% 24%; /* Azul petróleo */
-    --chart-4: 43 74% 66%; /* Amarillo brillante */
-    --chart-5: 27 87% 67%; /* Naranja cálido */
-    --radius: 0.5rem; /* Valor de radio (medida de esquinas redondeadas) */
+    --background: 0 0% 100%; /* Pure White */
+    --foreground: 0 0% 10%; /* Very Dark Gray */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 0 0% 9%; /* Soft Black/Dark Gray */
+    --primary-focus: 0 0% 20%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96%; /* Very Light Gray */
+    --secondary-focus: 0 0% 90%;
+    --secondary-foreground: 0 0% 20%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 92%; /* Light Border */
+    --input: 0 0% 92%;
+    --ring: 0 0% 10%;
+    --radius: 0rem; /* Sharp edges for premium feel, or keeping minimal radius */
   }
 }
 
@@ -59,7 +54,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .data-[focus-visible='true']:outline-focus {
-  outline-color: red !important; /* Customize the outline color */
+  outline-color: var(--primary) !important;
 }
 
 .max-height {

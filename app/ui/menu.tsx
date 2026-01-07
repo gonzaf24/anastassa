@@ -16,7 +16,7 @@ export const Menu = ({ onClose }: { onClose?: () => void }) => {
           <Button
             key={category.id}
             as={Link}
-            className="py-1 h-auto w-full flex justify-start bg-transparent font-bold text-[#414141] text-md whitespace-normal rounded-none cursor-pointer"
+            className="w-full h-auto min-h-[44px] flex justify-start items-center bg-transparent hover:bg-[#eae8e4] text-gray-800 font-medium text-sm tracking-widest uppercase py-3 px-4 rounded-lg transition-colors whitespace-normal text-left"
             href={`/${category.name}-${category.id}`}
             onClick={onClose}
           >

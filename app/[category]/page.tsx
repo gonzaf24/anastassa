@@ -47,8 +47,11 @@ export default function CategoryPage({ params }: { params: { category: string } 
   const { numberPart, textPart } = parseCategoryParam(params.category);
 
   return (
-    <section className="max-height flex flex-col items-center justify-start pb-20 gap-4 py-0 md:pt-0 sm:pr-6">
-      <p className="text-lg bg-white font-bold border-2 w-full text-center">{textPart}</p>
+    <section className="flex flex-col gap-8 md:gap-12 pb-20 pt-4 md:pt-10 w-full px-4 md:px-0">
+      <header className="w-full flex flex-col items-center justify-center space-y-2">
+        <h1 className="text-2xl md:text-3xl font-light tracking-widest uppercase text-gray-900">{textPart}</h1>
+        <div className="w-12 h-[1px] bg-gray-300"></div>
+      </header>
       <CategoryProductsList categoryId={numberPart} />
     </section>
   );

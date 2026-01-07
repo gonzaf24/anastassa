@@ -52,11 +52,12 @@ export default function CategoryProductsList({ categoryId }: { categoryId: numbe
 
   // Mostrar la lista de productos cuando la carga haya terminado
   return (
-    <div className="flex flex-wrap w-full gap-4 sm:gap-10 justify-center items-center md:justify-start md:items-start">
-      {categoryProducts.map((product) => (
-        <ProductCard key={product.ref} product={product} onProductSelect={onProductClick} />
-      ))}
-      {isImpar && <div className="w-[150px] md:w-[225px]"></div>}
+    <div className="w-full">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-8 md:gap-y-12">
+        {categoryProducts.map((product) => (
+          <ProductCard key={product.ref} product={product} onProductSelect={onProductClick} />
+        ))}
+      </div>
       {selectedPoduct && <ProductDrawer open={open} product={selectedPoduct} setOpen={setOpen} />}
     </div>
   );

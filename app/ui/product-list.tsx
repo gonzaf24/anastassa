@@ -1,4 +1,5 @@
 'use client';
+// ProductList.tsx
 import ProductCard from '@/app/ui/product-card';
 import { ProductDrawer } from '@/app/ui/product-drawer';
 import { useState } from 'react';
@@ -8,7 +9,7 @@ import { ProductListSkeleton } from './skeletons';
 
 export default function ProductList() {
   const [open, setOpen] = useState(false);
-  const { products, isLoadingProducts } = useAppContext(); // Asumimos que el contexto maneja el estado de carga
+  const { products, isLoadingProducts } = useAppContext();
   const [selectedProduct, setSelectedProduct] = useState<ProductsProps | undefined>(undefined);
 
   const onProductClick = (product: any) => {
@@ -16,21 +17,17 @@ export default function ProductList() {
     setOpen(true);
   };
 
-  // Mostramos el Skeleton mientras los productos están cargando
   if (isLoadingProducts) {
     return <ProductListSkeleton />;
   }
 
-  // Verifica si el número de productos es impar, y si es así, agrega un producto vacío
-  const isImpar = products.length % 2 !== 0;
-
-  // Mostrar la lista de productos cuando la carga haya terminado
   return (
-    <div className="flex flex-wrap w-full gap-4 sm:gap-10 justify-center md:justify-start md:items-start">
-      {products.map((product) => (
-        <ProductCard key={product.ref} product={product} onProductSelect={onProductClick} />
-      ))}
-      {isImpar && <div className="w-[150px] md:w-[225px]"></div>} {/* Espacio vacío en el grid */}
+    <div className="w-full">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-8 md:gap-y-12">
+        {products.map((product) => (
+          <ProductCard key={product.ref} product={product} onProductSelect={onProductClick} />
+        ))}
+      </div>
       {selectedProduct && <ProductDrawer open={open} product={selectedProduct} setOpen={setOpen} />}
     </div>
   );

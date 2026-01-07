@@ -165,6 +165,7 @@ export async function createProduct(prevState: ProductState, formData: FormData)
   const { photos } = productData;
   // Insert data into the database
   try {
+    const photosArrayLiteral = `{${photos.map((p) => `"${p}"`).join(',')}}`;
     await sql`
       INSERT INTO products (
         category_id, 
@@ -175,7 +176,7 @@ export async function createProduct(prevState: ProductState, formData: FormData)
         ${categoryId},
         ${ref}, 
         ${description},
-        ARRAY[${photos.map((url) => `${url}`).join(',')}]::text[]
+        ${photosArrayLiteral}::text[]
       )
     `;
   } catch (error) {
@@ -188,6 +189,7 @@ export async function createProduct(prevState: ProductState, formData: FormData)
 
   // Revalidate the cache for the invoices page and redirect the user.
   revalidatePath('/admin');
+  revalidatePath('/');
   redirect('/admin');
 }
 
@@ -215,6 +217,7 @@ export async function updateProduct(prevState: ProductState, formData: FormData)
   const { photos } = productData;
 
   try {
+    const photosArrayLiteral = `{${photos.map((p) => `"${p}"`).join(',')}}`;
     // Actualizar el producto
     await sql`
       UPDATE products
@@ -223,7 +226,7 @@ export async function updateProduct(prevState: ProductState, formData: FormData)
           description = ${description},
           photos = CASE
             WHEN ${photos.length} = 0 THEN NULL
-            ELSE ARRAY[${photos.map((url) => `${url}`).join(',')}]::text[]
+            ELSE ${photosArrayLiteral}::text[]
           END
       WHERE id = ${productId}
     `;
@@ -236,6 +239,7 @@ export async function updateProduct(prevState: ProductState, formData: FormData)
 
   // Revalidar la caché y redirigir
   revalidatePath('/admin');
+  revalidatePath('/');
   redirect('/admin');
 }
 
@@ -265,6 +269,7 @@ export async function deleteProduct(productId: number) {
     };
   }
   revalidatePath('/admin');
+  revalidatePath('/');
   redirect('/admin');
 }
 

@@ -43,8 +43,29 @@ export async function generateMetadata() {
 
 export default async function Page() {
   return (
-    <section className="max-height flex flex-col pb-20 gap-4 py-0 md:pt-0 sm:pr-6">
-      <p className="text-lg font-bold border-2 w-full text-center uppercase">TODAS LAS PRENDAS</p>
+    <section className="flex flex-col gap-8 md:gap-12 pb-20 pt-4 md:pt-10 w-full px-4 md:px-0">
+      <header className="w-full flex flex-col items-center justify-center space-y-2">
+        <h1 className="text-2xl md:text-3xl font-light tracking-widest uppercase text-gray-900">Colección</h1>
+        <div className="w-12 h-[1px] bg-gray-300"></div>
+      </header>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ClothingStore',
+            name: 'Anastassa',
+            url: process.env.BASE_URL || 'https://anastassa.com',
+            logo: `${process.env.BASE_URL || 'https://anastassa.com'}/anastassa-logo-alt.png`,
+            description: texts.description,
+            address: {
+              '@type': 'PostalAddress',
+              addressCountry: 'UY',
+              addressRegion: 'Montevideo',
+            },
+          }),
+        }}
+      />
       <ProductList />
     </section>
   );

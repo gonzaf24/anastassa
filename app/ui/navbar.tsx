@@ -50,10 +50,23 @@ export const Navbar = ({ session }: { session: any }) => {
 
       <NavbarContent className="basis-full max-w-min min-w-[50px] sm:hidden" justify="end" />
 
-      <NavbarMenu className="px-0">
-        <div className="flex flex-col gap-2 bg-[#ef8482] h-full">
+      <NavbarMenu className="px-0 bg-[#faf9f6] pt-6">
+        <div className="flex flex-col h-full bg-[#faf9f6] gap-4 px-4">
           <UserMenu onClose={handleCloseMenu} />
           {session && <AdminMenu />}
+
+          <div className="mt-auto pb-8 flex justify-center border-t border-gray-200 pt-6">
+            <NextLink
+              className="flex items-center gap-2 text-gray-500 hover:text-black transition-colors text-sm uppercase tracking-wider"
+              href="https://instagram.com/anastassa__"
+              rel="noreferrer"
+              target="_blank"
+              title="Instagram"
+            >
+              <img alt="Instagram" className="w-5 h-5 opacity-70" src="/instagram.svg" />
+              anastassa__
+            </NextLink>
+          </div>
         </div>
       </NavbarMenu>
     </NavbarUI>
