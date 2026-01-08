@@ -6,7 +6,8 @@ const texts = {
   description: 'Ropa de mujer, Montevideo - Canelones - Punta del este, Uruguay',
 };
 
-export async function generateMetadata({ params }: { params: { category: string } }) {
+export async function generateMetadata(props: { params: Promise<{ category: string }> }) {
+  const params = await props.params;
   const { textPart } = parseCategoryParam(params.category);
   const title = textPart;
   const description = `${textPart} - ${texts.description}`;
@@ -43,7 +44,8 @@ export async function generateMetadata({ params }: { params: { category: string 
   };
 }
 
-export default function CategoryPage({ params }: { params: { category: string } }) {
+export default async function CategoryPage(props: { params: Promise<{ category: string }> }) {
+  const params = await props.params;
   const { numberPart, textPart } = parseCategoryParam(params.category);
 
   return (

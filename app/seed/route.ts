@@ -1,5 +1,5 @@
 // import { db } from '@vercel/postgres';
-// import bcrypt from 'bcrypt';
+// import bcrypt from 'bcryptjs';
 // import { CategoriesData, ProductsData } from '../lib/hardcoded-data';
 // import { users } from '../lib/placeholder-data';
 
